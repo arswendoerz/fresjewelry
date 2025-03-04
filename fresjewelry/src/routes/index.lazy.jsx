@@ -1,13 +1,13 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 
 export const Route = createLazyFileRoute("/")({
-    component: RouteComponent,
+  component: RouteComponent,
 });
 
 function RouteComponent() {
-    return (
-        <div>
-            <h1>Home</h1>
-        </div>
-    );
+  return (
+    <div>
+      <img src="../src/assets/image.png" alt="Homepage Image" />
+    </div>
+  );
 }

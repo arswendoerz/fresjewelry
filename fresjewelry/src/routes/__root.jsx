@@ -46,52 +46,8 @@ const Navbar = () => {
             Product
           </Link>
 
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center gap-1 hover:text-[#85986d] transition duration-300"
-            >
-              Category <ChevronDown className="w-4 h-4" />
-            </button>
-            {/* Dropdown Menu */}
-            {isDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-40 bg-white border rounded-lg shadow-md overflow-hidden">
-                <Link
-                  to="/category/all"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  ALL
-                </Link>
-                <Link
-                  to="/category/ring"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  RING
-                </Link>
-                <Link
-                  to="/category/necklace"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  NECKLACE
-                </Link>
-                <Link
-                  to="/category/earrings"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  EARRINGS
-                </Link>
-                <Link
-                  to="/category/bracelet"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  BRACELET
-                </Link>
-              </div>
-            )}
-          </div>
-
           <Link
-            to="/about-us"
+            to="/aboutUs"
             className="hover:text-[#85986d] transition duration-300"
           >
             About Us
@@ -99,9 +55,15 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-4 text-gray-600">
-          <User className="w-6 h-6 cursor-pointer transition duration-300 hover:text-[#85986d]" />
-          <Bell className="w-6 h-6 cursor-pointer transition duration-300 hover:text-[#85986d]" />
-          <ShoppingCart className="w-6 h-6 cursor-pointer transition duration-300 hover:text-[#85986d]" />
+          <Link to="/account">
+            <User className="w-6 h-6 cursor-pointer transition duration-300 hover:text-[#85986d]" />
+          </Link>
+          <Link to="/nofication">
+            <Bell className="w-6 h-6 cursor-pointer transition duration-300 hover:text-[#85986d]" />
+          </Link>
+          <Link to="/shoppingCart">
+            <ShoppingCart className="w-6 h-6 cursor-pointer transition duration-300 hover:text-[#85986d]" />
+          </Link>
         </div>
 
         <div className="md:hidden">
@@ -138,50 +100,6 @@ const Navbar = () => {
           >
             Product
           </Link>
-
-          {/* In Mobile Responsive*/}
-          <div className="relative">
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center justify-between w-full text-left hover:text-[#85986d] transition duration-300"
-            >
-              Category <ChevronDown className="w-4 h-4" />
-            </button>
-            {isDropdownOpen && (
-              <div className="mt-2 bg-white border rounded-lg shadow-md overflow-hidden">
-                <Link
-                  to="/category/all"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  ALL
-                </Link>
-                <Link
-                  to="/category/ring"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  RING
-                </Link>
-                <Link
-                  to="/category/necklace"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  NECKLACE
-                </Link>
-                <Link
-                  to="/category/earrings"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  EARRINGS
-                </Link>
-                <Link
-                  to="/category/bracelet"
-                  className="block px-4 py-2 hover:bg-[#85986d] hover:text-white transition"
-                >
-                  BRACELET
-                </Link>
-              </div>
-            )}
-          </div>
 
           <Link
             to="/about-us"

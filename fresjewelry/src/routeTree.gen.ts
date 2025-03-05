@@ -18,6 +18,12 @@ import { Route as rootRoute } from './routes/__root'
 
 const ProductLazyImport = createFileRoute('/product')()
 const IndexLazyImport = createFileRoute('/')()
+const ShoppingCartIndexLazyImport = createFileRoute('/shoppingCart/')()
+const NoficationIndexLazyImport = createFileRoute('/nofication/')()
+const AccountIndexLazyImport = createFileRoute('/account/')()
+const AboutUsIndexLazyImport = createFileRoute('/aboutUs/')()
+const AuthRegisterLazyImport = createFileRoute('/auth/register')()
+const AuthLoginLazyImport = createFileRoute('/auth/login')()
 
 // Create/Update Routes
 
@@ -32,6 +38,46 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const ShoppingCartIndexLazyRoute = ShoppingCartIndexLazyImport.update({
+  id: '/shoppingCart/',
+  path: '/shoppingCart/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/shoppingCart/index.lazy').then((d) => d.Route),
+)
+
+const NoficationIndexLazyRoute = NoficationIndexLazyImport.update({
+  id: '/nofication/',
+  path: '/nofication/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/nofication/index.lazy').then((d) => d.Route),
+)
+
+const AccountIndexLazyRoute = AccountIndexLazyImport.update({
+  id: '/account/',
+  path: '/account/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/account/index.lazy').then((d) => d.Route))
+
+const AboutUsIndexLazyRoute = AboutUsIndexLazyImport.update({
+  id: '/aboutUs/',
+  path: '/aboutUs/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/aboutUs/index.lazy').then((d) => d.Route))
+
+const AuthRegisterLazyRoute = AuthRegisterLazyImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/auth/register.lazy').then((d) => d.Route))
+
+const AuthLoginLazyRoute = AuthLoginLazyImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/auth/login.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -51,6 +97,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductLazyImport
       parentRoute: typeof rootRoute
     }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/aboutUs/': {
+      id: '/aboutUs/'
+      path: '/aboutUs'
+      fullPath: '/aboutUs'
+      preLoaderRoute: typeof AboutUsIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/account/': {
+      id: '/account/'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/nofication/': {
+      id: '/nofication/'
+      path: '/nofication'
+      fullPath: '/nofication'
+      preLoaderRoute: typeof NoficationIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/shoppingCart/': {
+      id: '/shoppingCart/'
+      path: '/shoppingCart'
+      fullPath: '/shoppingCart'
+      preLoaderRoute: typeof ShoppingCartIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -59,36 +147,91 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/product': typeof ProductLazyRoute
+  '/auth/login': typeof AuthLoginLazyRoute
+  '/auth/register': typeof AuthRegisterLazyRoute
+  '/aboutUs': typeof AboutUsIndexLazyRoute
+  '/account': typeof AccountIndexLazyRoute
+  '/nofication': typeof NoficationIndexLazyRoute
+  '/shoppingCart': typeof ShoppingCartIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/product': typeof ProductLazyRoute
+  '/auth/login': typeof AuthLoginLazyRoute
+  '/auth/register': typeof AuthRegisterLazyRoute
+  '/aboutUs': typeof AboutUsIndexLazyRoute
+  '/account': typeof AccountIndexLazyRoute
+  '/nofication': typeof NoficationIndexLazyRoute
+  '/shoppingCart': typeof ShoppingCartIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
   '/product': typeof ProductLazyRoute
+  '/auth/login': typeof AuthLoginLazyRoute
+  '/auth/register': typeof AuthRegisterLazyRoute
+  '/aboutUs/': typeof AboutUsIndexLazyRoute
+  '/account/': typeof AccountIndexLazyRoute
+  '/nofication/': typeof NoficationIndexLazyRoute
+  '/shoppingCart/': typeof ShoppingCartIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/product'
+  fullPaths:
+    | '/'
+    | '/product'
+    | '/auth/login'
+    | '/auth/register'
+    | '/aboutUs'
+    | '/account'
+    | '/nofication'
+    | '/shoppingCart'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/product'
-  id: '__root__' | '/' | '/product'
+  to:
+    | '/'
+    | '/product'
+    | '/auth/login'
+    | '/auth/register'
+    | '/aboutUs'
+    | '/account'
+    | '/nofication'
+    | '/shoppingCart'
+  id:
+    | '__root__'
+    | '/'
+    | '/product'
+    | '/auth/login'
+    | '/auth/register'
+    | '/aboutUs/'
+    | '/account/'
+    | '/nofication/'
+    | '/shoppingCart/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   ProductLazyRoute: typeof ProductLazyRoute
+  AuthLoginLazyRoute: typeof AuthLoginLazyRoute
+  AuthRegisterLazyRoute: typeof AuthRegisterLazyRoute
+  AboutUsIndexLazyRoute: typeof AboutUsIndexLazyRoute
+  AccountIndexLazyRoute: typeof AccountIndexLazyRoute
+  NoficationIndexLazyRoute: typeof NoficationIndexLazyRoute
+  ShoppingCartIndexLazyRoute: typeof ShoppingCartIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ProductLazyRoute: ProductLazyRoute,
+  AuthLoginLazyRoute: AuthLoginLazyRoute,
+  AuthRegisterLazyRoute: AuthRegisterLazyRoute,
+  AboutUsIndexLazyRoute: AboutUsIndexLazyRoute,
+  AccountIndexLazyRoute: AccountIndexLazyRoute,
+  NoficationIndexLazyRoute: NoficationIndexLazyRoute,
+  ShoppingCartIndexLazyRoute: ShoppingCartIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -102,7 +245,13 @@ export const routeTree = rootRoute
       "filePath": "__root.jsx",
       "children": [
         "/",
-        "/product"
+        "/product",
+        "/auth/login",
+        "/auth/register",
+        "/aboutUs/",
+        "/account/",
+        "/nofication/",
+        "/shoppingCart/"
       ]
     },
     "/": {
@@ -110,6 +259,24 @@ export const routeTree = rootRoute
     },
     "/product": {
       "filePath": "product.lazy.jsx"
+    },
+    "/auth/login": {
+      "filePath": "auth/login.lazy.jsx"
+    },
+    "/auth/register": {
+      "filePath": "auth/register.lazy.jsx"
+    },
+    "/aboutUs/": {
+      "filePath": "aboutUs/index.lazy.jsx"
+    },
+    "/account/": {
+      "filePath": "account/index.lazy.jsx"
+    },
+    "/nofication/": {
+      "filePath": "nofication/index.lazy.jsx"
+    },
+    "/shoppingCart/": {
+      "filePath": "shoppingCart/index.lazy.jsx"
     }
   }
 }

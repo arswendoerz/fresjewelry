@@ -60,10 +60,10 @@ const Navbar = () => {
           <Link to="/account">
             <User className="w-6 h-6 cursor-pointer hover:text-[#85986d]" />
           </Link>
-          <Link to="/notification">
+          <Link to="/notification/">
             <Bell className="w-6 h-6 cursor-pointer hover:text-[#85986d]" />
           </Link>
-          <Link to="/shoppingCart">
+          <Link to="/shoppingCart/">
             <ShoppingCart className="w-6 h-6 cursor-pointer hover:text-[#85986d]" />
           </Link>
         </div>

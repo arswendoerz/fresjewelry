@@ -42,7 +42,7 @@ function Account() {
     });
     toast.success("Data has been saved locally!");
   };
- 
+
   // Handle logout 
   const handleLogout = () => {
     toast.success("You have been logged out!");
@@ -73,7 +73,7 @@ function Account() {
         <div className="w-full lg:w-2/6 mb-4 lg:mb-0">
           <div className="p-6 space-y-4">
             <div className="flex items-center mb-4">
-              <FiEdit3 className="cursor-pointer mr-2 w-6 h-6 text-[#85986d]"/>
+              <FiEdit3 className="cursor-pointer mr-2 w-6 h-6 text-[#85986d]" />
               <span>Change Profile</span>
             </div>
             <Separator orientation="horizontal" className="w-full h-[1px]" />
@@ -81,7 +81,7 @@ function Account() {
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <div className="flex items-center cursor-pointer">
-                    <TbLogout className="cursor-pointer mr-2 w-6 h-6 text-[#85986d]"/>
+                    <TbLogout className="cursor-pointer mr-2 w-6 h-6 text-[#85986d]" />
                     <span>Log Out</span>
                   </div>
                 </AlertDialogTrigger>
@@ -91,9 +91,9 @@ function Account() {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel className="bg-red-500 hover:bg-red-800 hover:text-white text-white">Cancel</AlertDialogCancel>
-                    <AlertDialogAction 
+                    <AlertDialogAction
                       className="bg-[#85986d] hover:bg-[#6b7a56] text-white"
-                      onClick={handleLogout} 
+                      onClick={handleLogout}
                     >
                       Log Out
                     </AlertDialogAction>
@@ -149,7 +149,9 @@ function Account() {
               </div>
               <div className="flex justify-center">
                 <Button
-                  className="bg-[#85986d] hover:bg-[#6b7a56] text-white w-[150px] h-[48px] rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+                  className="bg-gradient-to-r from-[#85986d] to-[#6b7a56] hover:from-[#6b7a56] hover:to-[#85986d] text-white w-[150px] h-[48px] 
+                  rounded-xl shadow-md hover:shadow-xl border border-[#9ba987]/50 font-semibold text-[16px] transition-all duration-300 ease-in-out 
+                  transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#85986d] focus:ring-opacity-50"
                   onClick={handleSave}
                 >
                   Save

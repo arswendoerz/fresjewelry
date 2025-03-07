@@ -19,7 +19,7 @@ import { Route as rootRoute } from './routes/__root'
 const ProductLazyImport = createFileRoute('/product')()
 const IndexLazyImport = createFileRoute('/')()
 const ShoppingCartIndexLazyImport = createFileRoute('/shoppingCart/')()
-const NoficationIndexLazyImport = createFileRoute('/nofication/')()
+const NotificationIndexLazyImport = createFileRoute('/notification/')()
 const AccountIndexLazyImport = createFileRoute('/account/')()
 const AboutUsIndexLazyImport = createFileRoute('/aboutUs/')()
 const AuthRegisterLazyImport = createFileRoute('/auth/register')()
@@ -47,12 +47,12 @@ const ShoppingCartIndexLazyRoute = ShoppingCartIndexLazyImport.update({
   import('./routes/shoppingCart/index.lazy').then((d) => d.Route),
 )
 
-const NoficationIndexLazyRoute = NoficationIndexLazyImport.update({
-  id: '/nofication/',
-  path: '/nofication/',
+const NotificationIndexLazyRoute = NotificationIndexLazyImport.update({
+  id: '/notification/',
+  path: '/notification/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
-  import('./routes/nofication/index.lazy').then((d) => d.Route),
+  import('./routes/notification/index.lazy').then((d) => d.Route),
 )
 
 const AccountIndexLazyRoute = AccountIndexLazyImport.update({
@@ -125,11 +125,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/nofication/': {
-      id: '/nofication/'
-      path: '/nofication'
-      fullPath: '/nofication'
-      preLoaderRoute: typeof NoficationIndexLazyImport
+    '/notification/': {
+      id: '/notification/'
+      path: '/notification'
+      fullPath: '/notification'
+      preLoaderRoute: typeof NotificationIndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/shoppingCart/': {
@@ -151,7 +151,7 @@ export interface FileRoutesByFullPath {
   '/auth/register': typeof AuthRegisterLazyRoute
   '/aboutUs': typeof AboutUsIndexLazyRoute
   '/account': typeof AccountIndexLazyRoute
-  '/nofication': typeof NoficationIndexLazyRoute
+  '/notification': typeof NotificationIndexLazyRoute
   '/shoppingCart': typeof ShoppingCartIndexLazyRoute
 }
 
@@ -162,7 +162,7 @@ export interface FileRoutesByTo {
   '/auth/register': typeof AuthRegisterLazyRoute
   '/aboutUs': typeof AboutUsIndexLazyRoute
   '/account': typeof AccountIndexLazyRoute
-  '/nofication': typeof NoficationIndexLazyRoute
+  '/notification': typeof NotificationIndexLazyRoute
   '/shoppingCart': typeof ShoppingCartIndexLazyRoute
 }
 
@@ -174,7 +174,7 @@ export interface FileRoutesById {
   '/auth/register': typeof AuthRegisterLazyRoute
   '/aboutUs/': typeof AboutUsIndexLazyRoute
   '/account/': typeof AccountIndexLazyRoute
-  '/nofication/': typeof NoficationIndexLazyRoute
+  '/notification/': typeof NotificationIndexLazyRoute
   '/shoppingCart/': typeof ShoppingCartIndexLazyRoute
 }
 
@@ -187,7 +187,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/aboutUs'
     | '/account'
-    | '/nofication'
+    | '/notification'
     | '/shoppingCart'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -197,7 +197,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/aboutUs'
     | '/account'
-    | '/nofication'
+    | '/notification'
     | '/shoppingCart'
   id:
     | '__root__'
@@ -207,7 +207,7 @@ export interface FileRouteTypes {
     | '/auth/register'
     | '/aboutUs/'
     | '/account/'
-    | '/nofication/'
+    | '/notification/'
     | '/shoppingCart/'
   fileRoutesById: FileRoutesById
 }
@@ -219,7 +219,7 @@ export interface RootRouteChildren {
   AuthRegisterLazyRoute: typeof AuthRegisterLazyRoute
   AboutUsIndexLazyRoute: typeof AboutUsIndexLazyRoute
   AccountIndexLazyRoute: typeof AccountIndexLazyRoute
-  NoficationIndexLazyRoute: typeof NoficationIndexLazyRoute
+  NotificationIndexLazyRoute: typeof NotificationIndexLazyRoute
   ShoppingCartIndexLazyRoute: typeof ShoppingCartIndexLazyRoute
 }
 
@@ -230,7 +230,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRegisterLazyRoute: AuthRegisterLazyRoute,
   AboutUsIndexLazyRoute: AboutUsIndexLazyRoute,
   AccountIndexLazyRoute: AccountIndexLazyRoute,
-  NoficationIndexLazyRoute: NoficationIndexLazyRoute,
+  NotificationIndexLazyRoute: NotificationIndexLazyRoute,
   ShoppingCartIndexLazyRoute: ShoppingCartIndexLazyRoute,
 }
 
@@ -250,7 +250,7 @@ export const routeTree = rootRoute
         "/auth/register",
         "/aboutUs/",
         "/account/",
-        "/nofication/",
+        "/notification/",
         "/shoppingCart/"
       ]
     },
@@ -272,8 +272,8 @@ export const routeTree = rootRoute
     "/account/": {
       "filePath": "account/index.lazy.jsx"
     },
-    "/nofication/": {
-      "filePath": "nofication/index.lazy.jsx"
+    "/notification/": {
+      "filePath": "notification/index.lazy.jsx"
     },
     "/shoppingCart/": {
       "filePath": "shoppingCart/index.lazy.jsx"

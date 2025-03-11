@@ -1,0 +1,82 @@
+[
+    {
+      "id": 1,
+      "name": "Gold Ring with Ronce Accessories",
+      "description": "A luxurious gold ring adorned with intricate ronce accessories, featuring delicate floral patterns.",
+      "price": "1.199.000",
+      "image": "/images/gold-ring-ronce.jpg",
+      "category": "Ring"
+    },
+    {
+      "id": 2,
+      "name": "Silver Necklace with Gemstone",
+      "description": "An elegant silver necklace featuring a stunning gemstone pendant, perfect for sophistication.",
+      "price": "799.000",
+      "image": "/images/silver-necklace-gemstone.jpg",
+      "category": "Necklace"
+    },
+    {
+      "id": 3,
+      "name": "Rose Gold Earrings",
+      "description": "Chic rose gold earrings with a modern twist, lightweight and stylish for daily wear.",
+      "price": "499.000",
+      "image": "/images/rose-gold-earrings.jpg",
+      "category": "Earrings"
+    },
+    {
+      "id": 4,
+      "name": "Diamond Bracelet",
+      "description": "A dazzling diamond bracelet that exudes luxury, perfect for gifting or personal collection.",
+      "price": "2.499.000",
+      "image": "/images/diamond-bracelet.jpg",
+      "category": "Bracelet"
+    },
+    {
+      "id": 5,
+      "name": "Classic Pearl Ring",
+      "description": "A timeless pearl ring set in a gold band, elegant and suitable for any occasion.",
+      "price": "999.000",
+      "image": "/images/classic-pearl-ring.jpg",
+      "category": "Ring"
+    },
+    {
+      "id": 6,
+      "name": "Emerald Pendant Necklace",
+      "description": "A striking emerald pendant necklace crafted with precision, adding color and elegance.",
+      "price": "1.799.000",
+      "image": "/images/emerald-pendant-necklace.jpg",
+      "category": "Necklace"
+    },
+    {
+      "id": 7,
+      "name": "Sapphire Stud Earrings",
+      "description": "Elegant sapphire stud earrings set in white gold, offering a subtle yet sophisticated sparkle.",
+      "price": "699.000",
+      "image": "/images/sapphire-stud-earrings.jpg",
+      "category": "Earrings"
+    },
+    {
+      "id": 8,
+      "name": "Rose Gold Charm Bracelet",
+      "description": "A versatile rose gold bracelet with customizable charms, blending charm and modern elegance.",
+      "price": "1.499.000",
+      "image": "/images/rose-gold-charm-bracelet.jpg",
+      "category": "Bracelet"
+    },
+    {
+      "id": 9,
+      "name": "Onyx Signet Ring",
+      "description": "A bold onyx signet ring in a sleek silver setting, perfect for a statement look.",
+      "price": "899.000",
+      "image": "/images/onyx-signet-ring.jpg",
+      "category": "Ring"
+    },
+    {
+      "id": 10,
+      "name": "Amethyst Drop Necklace",
+      "description": "A graceful amethyst drop necklace in a gold chain, adding a touch of regal charm.",
+      "price": "1.299.000",
+      "image": "/images/amethyst-drop-necklace.jpg",
+      "category": "Necklace"
+    }
+  ]

@@ -53,7 +53,7 @@ function Account() {
     <div className="font-poppins container mx-auto w-[90%] md:w-[70%] px-4 py-8">
       <Toaster />
       <div className="w-full flex justify-between items-center mb-5">
-        <h1 className="text-[20px] lg:text-2xl">
+        <h1 className="text-3xl text-center md:text-left">
           <strong>Account</strong>
         </h1>
       </div>

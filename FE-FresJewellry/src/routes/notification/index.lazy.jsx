@@ -93,7 +93,7 @@ function Notification() {
   return (
     <div className="font-poppins container mx-auto w-[90%] md:w-[70%] px-4 py-8">
       <div className="w-full flex justify-between items-center mb-5">
-        <h1 className="text-[20px] lg:text-2xl">
+        <h1 className="text-3xl text-black text-center md:text-left">
           <strong>Notifications</strong>
         </h1>
       </div>
@@ -142,7 +142,8 @@ function Notification() {
         </div>
       </div>
 
-      <div className="w-full mt-4">
+      {/* Container Scroll*/}
+      <div className="w-full mt-4 max-h-[500px] overflow-y-auto pr-2">
         <Notifications notifications={sortedNotifications} />
       </div>
     </div>

@@ -10,12 +10,12 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import productImage from '../assets/image1.png';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaRupiahSign } from "react-icons/fa6";
@@ -111,11 +111,20 @@ export const Route = createLazyFileRoute('/product')({
 
 function RouteComponent() {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedSize, setSelectedSize] = useState(""); // State untuk memilih size
-  const [openDialog, setOpenDialog] = useState(false); // State untuk dialog
-  const [currentProduct, setCurrentProduct] = useState(null); // State untuk add produk 
+  const [selectedSize, setSelectedSize] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
+  const [cartItems, setCartItems] = useState(() => {
+    const savedCart = localStorage.getItem('cartItems');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
   const categories = ["All", "Ring", "Necklace", 'Earrings', "Bracelet"];
+
+  // Simpan ke localStorage setiap kali cartItems berubah
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const filteredProducts =
     selectedCategory === "All"
@@ -123,12 +132,37 @@ function RouteComponent() {
       : products.filter((product) => product.category === selectedCategory);
 
   const handleAddToCart = (productName, size) => {
+    const product = products.find(p => p.name === productName);
+    const newItem = {
+      ...product,
+      size,
+      quantity: 1,
+      cartId: `${product.id}-${size}-${Date.now()}` // ID unik untuk setiap item di keranjang
+    };
+
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(item =>
+        item.id === product.id && item.size === size
+      );
+
+      if (existingItem) {
+        // Jika item sudah ada, tambah kuantitas
+        return prevItems.map(item =>
+          item.id === existingItem.id && item.size === size
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      // Jika item baru, tambahkan ke keranjang
+      return [...prevItems, newItem];
+    });
+
     toast.success(`${productName} (Size: ${size}) has been added to your cart!`, {
       position: "top-right",
       duration: 3000,
     });
-    setOpenDialog(false); // tutup dialog abis add
-    setSelectedSize(""); // Reset size
+    setOpenDialog(false);
+    setSelectedSize("");
   };
 
   const openAddToCartDialog = (product) => {

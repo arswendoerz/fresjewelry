@@ -16,9 +16,9 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
-const ProductLazyImport = createFileRoute('/product')()
 const IndexLazyImport = createFileRoute('/')()
 const ShoppingCartIndexLazyImport = createFileRoute('/shoppingCart/')()
+const ProductIndexLazyImport = createFileRoute('/product/')()
 const NotificationIndexLazyImport = createFileRoute('/notification/')()
 const AccountIndexLazyImport = createFileRoute('/account/')()
 const AboutUsIndexLazyImport = createFileRoute('/aboutUs/')()
@@ -26,12 +26,6 @@ const AuthRegisterLazyImport = createFileRoute('/auth/register')()
 const AuthLoginLazyImport = createFileRoute('/auth/login')()
 
 // Create/Update Routes
-
-const ProductLazyRoute = ProductLazyImport.update({
-  id: '/product',
-  path: '/product',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/product.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
@@ -46,6 +40,12 @@ const ShoppingCartIndexLazyRoute = ShoppingCartIndexLazyImport.update({
 } as any).lazy(() =>
   import('./routes/shoppingCart/index.lazy').then((d) => d.Route),
 )
+
+const ProductIndexLazyRoute = ProductIndexLazyImport.update({
+  id: '/product/',
+  path: '/product/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/product/index.lazy').then((d) => d.Route))
 
 const NotificationIndexLazyRoute = NotificationIndexLazyImport.update({
   id: '/notification/',
@@ -90,13 +90,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/product': {
-      id: '/product'
-      path: '/product'
-      fullPath: '/product'
-      preLoaderRoute: typeof ProductLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/auth/login': {
       id: '/auth/login'
       path: '/auth/login'
@@ -132,6 +125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NotificationIndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/product/': {
+      id: '/product/'
+      path: '/product'
+      fullPath: '/product'
+      preLoaderRoute: typeof ProductIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/shoppingCart/': {
       id: '/shoppingCart/'
       path: '/shoppingCart'
@@ -146,35 +146,35 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '/product': typeof ProductLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/auth/register': typeof AuthRegisterLazyRoute
   '/aboutUs': typeof AboutUsIndexLazyRoute
   '/account': typeof AccountIndexLazyRoute
   '/notification': typeof NotificationIndexLazyRoute
+  '/product': typeof ProductIndexLazyRoute
   '/shoppingCart': typeof ShoppingCartIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '/product': typeof ProductLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/auth/register': typeof AuthRegisterLazyRoute
   '/aboutUs': typeof AboutUsIndexLazyRoute
   '/account': typeof AccountIndexLazyRoute
   '/notification': typeof NotificationIndexLazyRoute
+  '/product': typeof ProductIndexLazyRoute
   '/shoppingCart': typeof ShoppingCartIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/product': typeof ProductLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/auth/register': typeof AuthRegisterLazyRoute
   '/aboutUs/': typeof AboutUsIndexLazyRoute
   '/account/': typeof AccountIndexLazyRoute
   '/notification/': typeof NotificationIndexLazyRoute
+  '/product/': typeof ProductIndexLazyRoute
   '/shoppingCart/': typeof ShoppingCartIndexLazyRoute
 }
 
@@ -182,55 +182,55 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/product'
     | '/auth/login'
     | '/auth/register'
     | '/aboutUs'
     | '/account'
     | '/notification'
+    | '/product'
     | '/shoppingCart'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/product'
     | '/auth/login'
     | '/auth/register'
     | '/aboutUs'
     | '/account'
     | '/notification'
+    | '/product'
     | '/shoppingCart'
   id:
     | '__root__'
     | '/'
-    | '/product'
     | '/auth/login'
     | '/auth/register'
     | '/aboutUs/'
     | '/account/'
     | '/notification/'
+    | '/product/'
     | '/shoppingCart/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  ProductLazyRoute: typeof ProductLazyRoute
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
   AuthRegisterLazyRoute: typeof AuthRegisterLazyRoute
   AboutUsIndexLazyRoute: typeof AboutUsIndexLazyRoute
   AccountIndexLazyRoute: typeof AccountIndexLazyRoute
   NotificationIndexLazyRoute: typeof NotificationIndexLazyRoute
+  ProductIndexLazyRoute: typeof ProductIndexLazyRoute
   ShoppingCartIndexLazyRoute: typeof ShoppingCartIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  ProductLazyRoute: ProductLazyRoute,
   AuthLoginLazyRoute: AuthLoginLazyRoute,
   AuthRegisterLazyRoute: AuthRegisterLazyRoute,
   AboutUsIndexLazyRoute: AboutUsIndexLazyRoute,
   AccountIndexLazyRoute: AccountIndexLazyRoute,
   NotificationIndexLazyRoute: NotificationIndexLazyRoute,
+  ProductIndexLazyRoute: ProductIndexLazyRoute,
   ShoppingCartIndexLazyRoute: ShoppingCartIndexLazyRoute,
 }
 
@@ -245,20 +245,17 @@ export const routeTree = rootRoute
       "filePath": "__root.jsx",
       "children": [
         "/",
-        "/product",
         "/auth/login",
         "/auth/register",
         "/aboutUs/",
         "/account/",
         "/notification/",
+        "/product/",
         "/shoppingCart/"
       ]
     },
     "/": {
       "filePath": "index.lazy.jsx"
-    },
-    "/product": {
-      "filePath": "product.lazy.jsx"
     },
     "/auth/login": {
       "filePath": "auth/login.lazy.jsx"
@@ -274,6 +271,9 @@ export const routeTree = rootRoute
     },
     "/notification/": {
       "filePath": "notification/index.lazy.jsx"
+    },
+    "/product/": {
+      "filePath": "product/index.lazy.jsx"
     },
     "/shoppingCart/": {
       "filePath": "shoppingCart/index.lazy.jsx"

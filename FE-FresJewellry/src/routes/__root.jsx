@@ -28,11 +28,10 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center gap-3">
           <img
-            src="../src/assets/FJ.png"
+            src="/logoprimary.svg"
             alt="Logo"
             className="h-12 w-12 rounded-full"
           />
-          <h1 className="text-xl font-semibold text-gray-800">Fres Jewelry</h1>
         </div>
 
         <div className="hidden md:flex gap-6 text-gray-600 font-medium">
@@ -43,7 +42,7 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            to="/product"
+            to="/product/"
             className="hover:text-[#85986d] hover:scale-110 transition duration-300"
           >
             Product

@@ -16,12 +16,13 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { useState, useEffect } from 'react';
-import productImage from '../assets/image1.png';
+import productImage from '@/assets/image1.png';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaRupiahSign } from "react-icons/fa6";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
+// Data produk
 const products = [
   {
     id: 1,
@@ -105,7 +106,8 @@ const products = [
   },
 ];
 
-export const Route = createLazyFileRoute('/product')({
+// Definisikan rute dengan createLazyFileRoute
+export const Route = createLazyFileRoute('/product/')({
   component: RouteComponent,
 });
 
@@ -119,41 +121,41 @@ function RouteComponent() {
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
-  const categories = ["All", "Ring", "Necklace", 'Earrings', "Bracelet"];
+  const categories = ["All", "Ring", "Necklace", "Earrings", "Bracelet"];
 
   // Simpan ke localStorage setiap kali cartItems berubah
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // Filter produk berdasarkan kategori
   const filteredProducts =
     selectedCategory === "All"
       ? products
       : products.filter((product) => product.category === selectedCategory);
 
+  // Fungsi untuk menambah produk ke keranjang
   const handleAddToCart = (productName, size) => {
-    const product = products.find(p => p.name === productName);
+    const product = products.find((p) => p.name === productName);
     const newItem = {
       ...product,
       size,
       quantity: 1,
-      cartId: `${product.id}-${size}-${Date.now()}` // ID unik untuk setiap item di keranjang
+      cartId: `${product.id}-${size}-${Date.now()}`, // ID unik untuk item di keranjang
     };
 
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(item =>
-        item.id === product.id && item.size === size
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find(
+        (item) => item.id === product.id && item.size === size
       );
 
       if (existingItem) {
-        // Jika item sudah ada, tambah kuantitas
-        return prevItems.map(item =>
+        return prevItems.map((item) =>
           item.id === existingItem.id && item.size === size
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
-      // Jika item baru, tambahkan ke keranjang
       return [...prevItems, newItem];
     });
 
@@ -169,6 +171,9 @@ function RouteComponent() {
     setCurrentProduct(product);
     setOpenDialog(true);
   };
+
+  // Logging untuk debugging
+  console.log('Rendering RouteComponent, productImage:', productImage);
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-[1200px]">
@@ -190,7 +195,7 @@ function RouteComponent() {
         ))}
       </div>
 
-      {/* card Products */}
+      {/* Card Products */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
         {filteredProducts.map((product) => (
           <Card key={product.id} className="w-[350px] h-[500px]">
@@ -204,14 +209,19 @@ function RouteComponent() {
             <CardContent>
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-sm text-gray-600 h-[90px] text-justify">{product.description}</p>
+                <p className="text-sm text-gray-600 h-[90px] text-justify">
+                  {product.description}
+                </p>
                 <p className="text-lg font-bold">
                   <FaRupiahSign className="inline mr-1" /> {product.price}
                 </p>
               </div>
             </CardContent>
             <CardFooter>
-              <Dialog open={openDialog && currentProduct?.id === product.id} onOpenChange={setOpenDialog}>
+              <Dialog
+                open={openDialog && currentProduct?.id === product.id}
+                onOpenChange={setOpenDialog}
+              >
                 <DialogTrigger asChild>
                   <Button
                     className="w-full bg-[#85986d] hover:bg-[#6b7a56] text-white transition-colors"
@@ -244,15 +254,14 @@ function RouteComponent() {
                     </RadioGroup>
                   </div>
                   <DialogFooter>
-                    <Button
-                      variant="outline"
-                      onClick={() => setOpenDialog(false)}
-                    >
+                    <Button variant="outline" onClick={() => setOpenDialog(false)}>
                       Cancel
                     </Button>
                     <Button
                       className="bg-[#85986d] hover:bg-[#6b7a56] text-white"
-                      onClick={() => selectedSize && handleAddToCart(product.name, selectedSize)}
+                      onClick={() =>
+                        selectedSize && handleAddToCart(product.name, selectedSize)
+                      }
                       disabled={!selectedSize}
                     >
                       Add

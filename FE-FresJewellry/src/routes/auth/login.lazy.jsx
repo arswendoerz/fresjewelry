@@ -45,9 +45,9 @@ function Login() {
       <div className="grid w-full h-full grid-cols-1 md:grid-cols-2">
         <div className="relative hidden md:block">
           <img
-            src="/side-picture.svg"
-            alt="background image"
-            className="object-cover w-screen h-screen"
+            src="/pattern.svg"
+            alt="Pattern Background"
+            className="absolute inset-0 w-full h-full object-cover filter blur-[1px]"
           />
         </div>
         <div className="flex items-center justify-center flex-col">

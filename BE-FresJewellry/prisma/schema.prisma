@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model OrderItems {
+  id         BigInt    @id @default(autoincrement())
+  order_id   Int?
+  product_id Int?
+  quantity   Int
+  subtotal   Decimal   @db.Decimal(10, 2)
+  Orders     Orders?   @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Products   Products? @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Orders {
+  id               BigInt       @id @default(autoincrement())
+  user_id          Int?
+  total_price      Decimal      @db.Decimal(10, 2)
+  payment_method   String?      @db.VarChar(50)
+  payment_status   String?      @db.VarChar(50)
+  transaction_code String?      @unique @db.VarChar(50)
+  OrderItems       OrderItems[]
+  Users            Users?       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Payments         Payments[]
+}
+
+model Payments {
+  id                 BigInt   @id @default(autoincrement())
+  order_id           Int?
+  transaction_id     String   @unique @db.VarChar(100)
+  payment_method     String?  @db.VarChar(50)
+  payment_status     String?  @db.VarChar(50)
+  payment_url        String?
+  confirmed_by_admin Boolean? @default(false)
+  Orders             Orders?  @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Products {
+  id          BigInt       @id @default(autoincrement())
+  name        String       @db.VarChar(255)
+  description String?
+  price       Decimal      @db.Decimal(10, 2)
+  stock       Int          @default(0)
+  image       String?
+  OrderItems  OrderItems[]
+}
+
+model Users {
+  id       BigInt   @id @default(autoincrement())
+  name     String   @db.VarChar(100)
+  email    String   @unique @db.VarChar(100)
+  password String
+  phone    String?  @db.VarChar(20)
+  address  String?
+  Orders   Orders[]
+}

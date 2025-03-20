@@ -1,18 +1,26 @@
 import * as React from "react";
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import { createRootRoute, useLocation } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import Navbar from "@/components/ui/navbar";
-import FooterFresh from "@/components/ui/footerFres";
+import Navbar from "@/components/Navbar/navbar";
+import FooterFresh from "@/components/Footer/footerFres";
+import { Outlet } from "@tanstack/react-router";
 
 export const Route = createRootRoute({
-  component: () => (
+  component: RootComponent,
+});
+
+function RootComponent() {
+  const location = useLocation();
+  const isAuthPage = location.pathname.startsWith('/auth');
+
+  return (
     <>
-      <Navbar />
-      <hr />
+      {!isAuthPage && <Navbar />}
+      {!isAuthPage && <hr />}
       <Outlet />
-      <hr />
-      <FooterFresh />
+      {!isAuthPage && <hr />}
+      {!isAuthPage && <FooterFresh />}
       <TanStackRouterDevtools />
     </>
-  ),
-});
+  );
+}

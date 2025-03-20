@@ -1,4 +1,4 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,11 +7,11 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { FaRupiahSign, FaTrash } from "react-icons/fa6";
-import { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import productImage from '../../assets/image1.png';
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import productImage from "../../assets/image1.png";
 
-export const Route = createLazyFileRoute('/shoppingCart/')({
+export const Route = createLazyFileRoute("/shoppingCart/")({
   component: ShoppingCartComponent,
 });
 
@@ -91,15 +91,14 @@ function ShoppingCartComponent() {
     },
   ]);
 
-
   const removeFromCart = (itemId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
-    toast.success('Item removed from cart!', {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+    toast.success("Item removed from cart!", {
       position: "top-right",
       duration: 3000,
       style: {
-        background: '#85986d',
-        color: '#fff',
+        background: "#CB9531",
+        color: "#fff",
       },
     });
   };
@@ -110,18 +109,20 @@ function ShoppingCartComponent() {
       return;
     }
 
-    setCartItems(prevItems =>
-      prevItems.map(item =>
+    setCartItems((prevItems) =>
+      prevItems.map((item) =>
         item.id === itemId ? { ...item, quantity: newQuantity } : item
       )
     );
   };
 
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => {
-      const price = parseFloat(item.price.replace('.', ''));
-      return total + (price * item.quantity);
-    }, 0).toLocaleString('id-ID');
+    return cartItems
+      .reduce((total, item) => {
+        const price = parseFloat(item.price.replace(".", ""));
+        return total + price * item.quantity;
+      }, 0)
+      .toLocaleString("id-ID");
   };
 
   return (
@@ -138,7 +139,7 @@ function ShoppingCartComponent() {
               <p className="text-gray-600 text-lg mb-4">Your cart is empty</p>
               <Button
                 className="bg-[#85986d] hover:bg-[#6b7a56] text-white text-base py-4 px-6 rounded-lg transition-transform duration-300 hover:scale-105"
-                onClick={() => window.location.href = '/product'}
+                onClick={() => (window.location.href = "/product")}
               >
                 Continue Shopping
               </Button>
@@ -157,9 +158,11 @@ function ShoppingCartComponent() {
                   />
                 </CardHeader>
                 <CardContent className="flex-1 p-3">
-                  <h3 className="text-base font-semibold text-[#6b7a56]">{item.name}</h3>
+                  <h3 className="text-base font-semibold text-[#CB9531]">
+                    {item.name}
+                  </h3>
                   <p className="text-sm text-gray-600">Size: {item.size}</p>
-                  <p className="text-base font-bold mt-1 text-[#85986d]">
+                  <p className="text-base font-bold mt-1 text-[#6C4C35]">
                     <FaRupiahSign className="inline mr-1" /> {item.price}
                   </p>
                 </CardContent>
@@ -168,16 +171,18 @@ function ShoppingCartComponent() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="hover:bg-[#85986d] hover:text-white transition-colors px-2 py-1"
+                      className="hover:bg-[#6C4C35] hover:text-white transition-colors px-2 py-1"
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                     >
                       -
                     </Button>
-                    <span className="w-8 text-center font-semibold text-sm">{item.quantity}</span>
+                    <span className="w-8 text-center font-semibold text-sm">
+                      {item.quantity}
+                    </span>
                     <Button
                       variant="outline"
                       size="sm"
-                      className="hover:bg-[#85986d] hover:text-white transition-colors px-2 py-1"
+                      className="hover:bg-[#6C4C35] hover:text-white transition-colors px-2 py-1"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     >
                       +
@@ -198,9 +203,11 @@ function ShoppingCartComponent() {
         </div>
 
         {cartItems.length > 0 && (
-          <Card className="w-full lg:w-[350px] shadow-md border-t-4 border-[#85986d] sticky top-16 h-fit">
+          <Card className="w-full lg:w-[350px] shadow-md border-t-4 border-[#CB9531] sticky top-16 h-fit">
             <CardContent className="p-4">
-              <h2 className="text-lg font-semibold text-[#6b7a56] mb-3">Order Summary</h2>
+              <h2 className="text-lg font-semibold text-[#CB9531] mb-3">
+                Order Summary
+              </h2>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 text-sm">Subtotal:</span>
@@ -210,8 +217,10 @@ function ShoppingCartComponent() {
                 </div>
                 <hr className="border-gray-200" />
                 <div className="flex justify-between items-center">
-                  <span className="text-lg font-semibold text-[#85986d]">Total:</span>
-                  <p className="text-xl font-bold text-[#6b7a56]">
+                  <span className="text-lg font-semibold text-[#CB9531]">
+                    Total:
+                  </span>
+                  <p className="text-xl font-bold text-[#6C4C35]">
                     <FaRupiahSign className="inline mr-1" /> {calculateTotal()}
                   </p>
                 </div>
@@ -219,15 +228,17 @@ function ShoppingCartComponent() {
             </CardContent>
             <CardFooter className="p-4 pt-0">
               <Button
-                className="w-full bg-[#85986d] hover:bg-[#6b7a56] text-white text-base font-semibold py-4 rounded-lg transition-transform duration-300 hover:scale-105"
-                onClick={() => toast.success('Proceeding to checkout!', {
-                  position: "top-right",
-                  duration: 3000,
-                  style: {
-                    background: '#85986d',
-                    color: '#fff',
-                  },
-                })}
+                className="w-full bg-[#CB9531] hover:bg-[#6C4C35] text-white text-base font-semibold py-4 rounded-lg transition-transform duration-300 hover:scale-105"
+                onClick={() =>
+                  toast.success("Proceeding to checkout!", {
+                    position: "top-right",
+                    duration: 3000,
+                    style: {
+                      background: "#CB9531",
+                      color: "#fff",
+                    },
+                  })
+                }
               >
                 Proceed to Checkout
               </Button>

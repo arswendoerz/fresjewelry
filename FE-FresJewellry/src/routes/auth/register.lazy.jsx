@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { createLazyFileRoute, useNavigate } from '@tanstack/react-router';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import ReactLoading from 'react-loading';
-import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
+import * as React from "react";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import ReactLoading from "react-loading";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
-export const Route = createLazyFileRoute('/auth/register')({
+export const Route = createLazyFileRoute("/auth/register")({
   component: Register,
 });
 
@@ -15,20 +15,20 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [passwordError, setPasswordError] = useState('');
+  const [passwordError, setPasswordError] = useState("");
   const [formData, setFormData] = useState({
-    name: '',
-    address: '',
-    phoneNumber: '',
-    email: '',
+    name: "",
+    address: "",
+    phoneNumber: "",
+    email: "",
     profilePicture: null,
-    password: '',
-    confirmPassword: '',
+    password: "",
+    confirmPassword: "",
   });
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'profilePicture') {
+    if (name === "profilePicture") {
       setFormData((prev) => ({
         ...prev,
         [name]: files[0],
@@ -40,12 +40,16 @@ function Register() {
       }));
     }
 
-    if (name === 'password' || name === 'confirmPassword') {
+    if (name === "password" || name === "confirmPassword") {
       const updatedForm = { ...formData, [name]: value };
-      if (updatedForm.password && updatedForm.confirmPassword && updatedForm.password !== updatedForm.confirmPassword) {
-        setPasswordError('Passwords do not match');
+      if (
+        updatedForm.password &&
+        updatedForm.confirmPassword &&
+        updatedForm.password !== updatedForm.confirmPassword
+      ) {
+        setPasswordError("Passwords do not match");
       } else {
-        setPasswordError('');
+        setPasswordError("");
       }
     }
   };
@@ -53,25 +57,25 @@ function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      setPasswordError('Passwords do not match');
+      setPasswordError("Passwords do not match");
       return;
     }
     setIsLoading(true);
     setTimeout(() => {
-      console.log('Registration successful with:', formData);
+      console.log("Registration successful with:", formData);
       setIsLoading(false);
-      navigate({ to: '/auth/login' });
+      navigate({ to: "/auth/login" });
     }, 1500);
   };
 
   const isFormFilled =
-    formData.name.trim() !== '' &&
-    formData.address.trim() !== '' &&
-    formData.phoneNumber.trim() !== '' &&
-    formData.email.trim() !== '' &&
+    formData.name.trim() !== "" &&
+    formData.address.trim() !== "" &&
+    formData.phoneNumber.trim() !== "" &&
+    formData.email.trim() !== "" &&
     formData.profilePicture !== null &&
-    formData.password.trim() !== '' &&
-    formData.confirmPassword.trim() !== '' &&
+    formData.password.trim() !== "" &&
+    formData.confirmPassword.trim() !== "" &&
     formData.password === formData.confirmPassword;
 
   return (
@@ -79,7 +83,7 @@ function Register() {
       <div className="grid w-full h-full grid-cols-1 md:grid-cols-2">
         <div className="relative hidden md:block">
           <img
-            src="/pattern.svg"
+            src="/logoprimary.svg"
             alt="Pattern Background"
             className="absolute inset-0 w-full h-full object-cover filter blur-[1px]"
           />
@@ -87,10 +91,16 @@ function Register() {
         <div className="flex items-center justify-center flex-col p-4">
           <div className="w-full max-w-md">
             <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-h-[80vh] overflow-y-auto">
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col gap-4 max-h-[80vh] overflow-y-auto"
+            >
               {/* Name */}
               <div>
-                <label htmlFor="name" className="mb-1 text-gray-700 block text-sm">
+                <label
+                  htmlFor="name"
+                  className="mb-1 text-gray-700 block text-sm"
+                >
                   Name
                 </label>
                 <Input
@@ -105,7 +115,10 @@ function Register() {
 
               {/* Address */}
               <div>
-                <label htmlFor="address" className="mb-1 text-gray-700 block text-sm">
+                <label
+                  htmlFor="address"
+                  className="mb-1 text-gray-700 block text-sm"
+                >
                   Address
                 </label>
                 <Input
@@ -120,7 +133,10 @@ function Register() {
 
               {/* Phone Number */}
               <div>
-                <label htmlFor="phoneNumber" className="mb-1 text-gray-700 block text-sm">
+                <label
+                  htmlFor="phoneNumber"
+                  className="mb-1 text-gray-700 block text-sm"
+                >
                   Phone Number
                 </label>
                 <Input
@@ -135,7 +151,10 @@ function Register() {
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="mb-1 text-gray-700 block text-sm">
+                <label
+                  htmlFor="email"
+                  className="mb-1 text-gray-700 block text-sm"
+                >
                   Email
                 </label>
                 <Input
@@ -144,13 +163,16 @@ function Register() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Example: johndee@gmail.com"
-                  className="p-2 border rounded-lg w-full transition-all duration-300 border-gray-300 focus:border-[#85986d] text-sm"
+                  className="p-2 border rounded-lg w-full transition-all duration-300 border-gray-300 focus:border-[#CB9531] text-sm"
                 />
               </div>
 
               {/* Profile Picture */}
               <div>
-                <label htmlFor="profilePicture" className="mb-1 text-gray-700 block text-sm">
+                <label
+                  htmlFor="profilePicture"
+                  className="mb-1 text-gray-700 block text-sm"
+                >
                   Profile Picture
                 </label>
                 <Input
@@ -159,13 +181,16 @@ function Register() {
                   type="file"
                   accept="image/*"
                   onChange={handleChange}
-                  className="p-1 border rounded-lg w-full transition-all duration-300 border-gray-300 focus:border-[#85986d] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#85986d] file:text-white hover:file:bg-[#6b7a56]"
+                  className="p-1 border rounded-lg w-full transition-all duration-300 border-gray-300 focus:border-[#CB9531] file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#CB9531] file:text-white hover:file:bg-[#6C4C35]"
                 />
               </div>
 
               {/* Password */}
               <div>
-                <label htmlFor="password" className="mb-1 text-gray-700 block text-sm">
+                <label
+                  htmlFor="password"
+                  className="mb-1 text-gray-700 block text-sm"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -175,7 +200,7 @@ function Register() {
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="Enter password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     className="p-2 border rounded-lg w-full transition-all duration-300 border-gray-300 focus:border-[#85986d] text-sm"
                   />
                   <button
@@ -183,14 +208,21 @@ function Register() {
                     className="absolute inset-y-0 right-0 pr-2 flex items-center"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <IoMdEye size={18} /> : <IoMdEyeOff size={18} />}
+                    {showPassword ? (
+                      <IoMdEye size={18} />
+                    ) : (
+                      <IoMdEyeOff size={18} />
+                    )}
                   </button>
                 </div>
               </div>
 
               {/* Confirm Password */}
               <div>
-                <label htmlFor="confirmPassword" className="mb-1 text-gray-700 block text-sm">
+                <label
+                  htmlFor="confirmPassword"
+                  className="mb-1 text-gray-700 block text-sm"
+                >
                   Confirm Password
                 </label>
                 <div className="relative">
@@ -200,16 +232,23 @@ function Register() {
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     placeholder="Confirm your password"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    className={`p-2 border rounded-lg w-full transition-all duration-300 text-sm ${passwordError ? 'border-red-500 focus:border-red-600' : 'border-gray-300 focus:border-[#85986d]'
-                      }`}
+                    type={showConfirmPassword ? "text" : "password"}
+                    className={`p-2 border rounded-lg w-full transition-all duration-300 text-sm ${
+                      passwordError
+                        ? "border-red-500 focus:border-red-600"
+                        : "border-gray-300 focus:border-[#CB9531]"
+                    }`}
                   />
                   <button
                     type="button"
                     className="absolute inset-y-0 right-0 pr-2 flex items-center"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showConfirmPassword ? <IoMdEye size={18} /> : <IoMdEyeOff size={18} />}
+                    {showConfirmPassword ? (
+                      <IoMdEye size={18} />
+                    ) : (
+                      <IoMdEyeOff size={18} />
+                    )}
                   </button>
                 </div>
                 {passwordError && (
@@ -220,7 +259,7 @@ function Register() {
               {/* Register Button */}
               <Button
                 type="submit"
-                className="w-full rounded-lg mt-2 bg-[#85986d] text-white h-10 hover:bg-[#6b7a56] transition-all duration-300 text-sm"
+                className="w-full rounded-lg mt-2 bg-[#CB9531] text-white h-10 hover:bg-[#6C4C35] transition-all duration-300 text-sm"
                 disabled={!isFormFilled || isLoading}
               >
                 {isLoading ? (
@@ -232,14 +271,17 @@ function Register() {
                     className="mx-auto"
                   />
                 ) : (
-                  'Register'
+                  "Register"
                 )}
               </Button>
             </form>
 
             <p className="mt-4 text-center text-gray-600 text-sm">
-              Already have an account?{' '}
-              <a href="/auth/login" className="text-[#85986d] font-semibold hover:underline">
+              Already have an account?{" "}
+              <a
+                href="/auth/login"
+                className="text-[#CB9531] font-semibold hover:underline"
+              >
                 Login here
               </a>
             </p>

@@ -1,4 +1,4 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,9 +15,9 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useState, useEffect } from 'react';
-import productImage from '@/assets/image1.png';
-import toast, { Toaster } from 'react-hot-toast';
+import { useState, useEffect } from "react";
+import productImage from "@/assets/image1.png";
+import toast, { Toaster } from "react-hot-toast";
 import { FaRupiahSign } from "react-icons/fa6";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -27,7 +27,8 @@ const products = [
   {
     id: 1,
     name: "Gold Ring with Ronce Accessories",
-    description: "A luxurious gold ring adorned with intricate ronce accessories, featuring delicate floral patterns.",
+    description:
+      "A luxurious gold ring adorned with intricate ronce accessories, featuring delicate floral patterns.",
     price: "1.199.000",
     image: productImage,
     category: "Ring",
@@ -35,7 +36,8 @@ const products = [
   {
     id: 2,
     name: "Silver Necklace with Gemstone",
-    description: "An elegant silver necklace featuring a stunning gemstone pendant, perfect for sophistication.",
+    description:
+      "An elegant silver necklace featuring a stunning gemstone pendant, perfect for sophistication.",
     price: "799.000",
     image: productImage,
     category: "Necklace",
@@ -43,7 +45,8 @@ const products = [
   {
     id: 3,
     name: "Rose Gold Earrings",
-    description: "Chic rose gold earrings with a modern twist, lightweight and stylish for daily wear.",
+    description:
+      "Chic rose gold earrings with a modern twist, lightweight and stylish for daily wear.",
     price: "499.000",
     image: productImage,
     category: "Earrings",
@@ -51,7 +54,8 @@ const products = [
   {
     id: 4,
     name: "Diamond Bracelet",
-    description: "A dazzling diamond bracelet that exudes luxury, perfect for gifting or personal collection.",
+    description:
+      "A dazzling diamond bracelet that exudes luxury, perfect for gifting or personal collection.",
     price: "2.499.000",
     image: productImage,
     category: "Bracelet",
@@ -59,7 +63,8 @@ const products = [
   {
     id: 5,
     name: "Classic Pearl Ring",
-    description: "A timeless pearl ring set in a gold band, elegant and suitable for any occasion.",
+    description:
+      "A timeless pearl ring set in a gold band, elegant and suitable for any occasion.",
     price: "999.000",
     image: productImage,
     category: "Ring",
@@ -67,7 +72,8 @@ const products = [
   {
     id: 6,
     name: "Emerald Pendant Necklace",
-    description: "A striking emerald pendant necklace crafted with precision, adding color and elegance.",
+    description:
+      "A striking emerald pendant necklace crafted with precision, adding color and elegance.",
     price: "1.799.000",
     image: productImage,
     category: "Necklace",
@@ -75,7 +81,8 @@ const products = [
   {
     id: 7,
     name: "Sapphire Stud Earrings",
-    description: "Elegant sapphire stud earrings set in white gold, offering a subtle yet sophisticated sparkle.",
+    description:
+      "Elegant sapphire stud earrings set in white gold, offering a subtle yet sophisticated sparkle.",
     price: "699.000",
     image: productImage,
     category: "Earrings",
@@ -83,7 +90,8 @@ const products = [
   {
     id: 8,
     name: "Rose Gold Charm Bracelet",
-    description: "A versatile rose gold bracelet with customizable charms, blending charm and modern elegance.",
+    description:
+      "A versatile rose gold bracelet with customizable charms, blending charm and modern elegance.",
     price: "1.499.000",
     image: productImage,
     category: "Bracelet",
@@ -91,7 +99,8 @@ const products = [
   {
     id: 9,
     name: "Onyx Signet Ring",
-    description: "A bold onyx signet ring in a sleek silver setting, perfect for a statement look.",
+    description:
+      "A bold onyx signet ring in a sleek silver setting, perfect for a statement look.",
     price: "899.000",
     image: productImage,
     category: "Ring",
@@ -99,7 +108,8 @@ const products = [
   {
     id: 10,
     name: "Amethyst Drop Necklace",
-    description: "A graceful amethyst drop necklace in a gold chain, adding a touch of regal charm.",
+    description:
+      "A graceful amethyst drop necklace in a gold chain, adding a touch of regal charm.",
     price: "1.299.000",
     image: productImage,
     category: "Necklace",
@@ -107,7 +117,7 @@ const products = [
 ];
 
 // Definisikan rute dengan createLazyFileRoute
-export const Route = createLazyFileRoute('/product/')({
+export const Route = createLazyFileRoute("/product/")({
   component: RouteComponent,
 });
 
@@ -117,7 +127,7 @@ function RouteComponent() {
   const [openDialog, setOpenDialog] = useState(false);
   const [currentProduct, setCurrentProduct] = useState(null);
   const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem('cartItems');
+    const savedCart = localStorage.getItem("cartItems");
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
@@ -125,7 +135,7 @@ function RouteComponent() {
 
   // Simpan ke localStorage setiap kali cartItems berubah
   useEffect(() => {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
   // Filter produk berdasarkan kategori
@@ -159,10 +169,13 @@ function RouteComponent() {
       return [...prevItems, newItem];
     });
 
-    toast.success(`${productName} (Size: ${size}) has been added to your cart!`, {
-      position: "top-right",
-      duration: 3000,
-    });
+    toast.success(
+      `${productName} (Size: ${size}) has been added to your cart!`,
+      {
+        position: "top-right",
+        duration: 3000,
+      }
+    );
     setOpenDialog(false);
     setSelectedSize("");
   };
@@ -173,7 +186,7 @@ function RouteComponent() {
   };
 
   // Logging untuk debugging
-  console.log('Rendering RouteComponent, productImage:', productImage);
+  console.log("Rendering RouteComponent, productImage:", productImage);
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-[1200px]">
@@ -185,10 +198,11 @@ function RouteComponent() {
             key={category}
             variant={selectedCategory === category ? "default" : "outline"}
             onClick={() => setSelectedCategory(category)}
-            className={`${selectedCategory === category
-              ? "bg-[#85986d] hover:bg-[#6b7a56] text-white"
-              : "border-black"
-              } transition-colors min-w-[80px]`}
+            className={`${
+              selectedCategory === category
+                ? "bg-[#CB9531] hover:bg-[#6C4C35] text-white"
+                : "border-black"
+            } transition-colors min-w-[80px]`}
           >
             {category}
           </Button>
@@ -224,7 +238,7 @@ function RouteComponent() {
               >
                 <DialogTrigger asChild>
                   <Button
-                    className="w-full bg-[#85986d] hover:bg-[#6b7a56] text-white transition-colors"
+                    className="w-full bg-[#CB9531] hover:bg-[#6C4C35] text-white transition-colors"
                     onClick={() => openAddToCartDialog(product)}
                   >
                     Add to Cart
@@ -234,11 +248,15 @@ function RouteComponent() {
                   <DialogHeader>
                     <DialogTitle>Add {product.name} to Cart</DialogTitle>
                     <DialogDescription>
-                      Please select a size for your {product.category.toLowerCase()}.
+                      Please select a size for your{" "}
+                      {product.category.toLowerCase()}.
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
-                    <RadioGroup value={selectedSize} onValueChange={setSelectedSize}>
+                    <RadioGroup
+                      value={selectedSize}
+                      onValueChange={setSelectedSize}
+                    >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="S" id="size-s" />
                         <Label htmlFor="size-s">Small</Label>
@@ -254,13 +272,17 @@ function RouteComponent() {
                     </RadioGroup>
                   </div>
                   <DialogFooter>
-                    <Button variant="outline" onClick={() => setOpenDialog(false)}>
+                    <Button
+                      variant="outline"
+                      onClick={() => setOpenDialog(false)}
+                    >
                       Cancel
                     </Button>
                     <Button
                       className="bg-[#85986d] hover:bg-[#6b7a56] text-white"
                       onClick={() =>
-                        selectedSize && handleAddToCart(product.name, selectedSize)
+                        selectedSize &&
+                        handleAddToCart(product.name, selectedSize)
                       }
                       disabled={!selectedSize}
                     >

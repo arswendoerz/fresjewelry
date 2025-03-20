@@ -27,13 +27,14 @@ const Navbar = () => {
       <nav className="p-4 bg-white shadow-md flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <img
-            src="/logoprimary.svg"
-            alt="Logo"
-            className="h-16 w-16 rounded-full"
-          />
+          <Link to="/">
+            <img
+              src="/logoprimary.svg"
+              alt="Logo"
+              className="h-16 w-16 rounded-full"
+            />
+          </Link>
         </div>
-
         <div className="hidden md:flex gap-6 text-gray-600 font-medium">
           <Link
             to="/"

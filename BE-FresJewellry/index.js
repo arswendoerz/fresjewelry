@@ -2,8 +2,8 @@ require("dotenv").config(); // To enable .env called
 const express = require("express"); // Import express with non-module
 require("express-async-errors");
 const fileUpload = require("express-fileupload"); // This package is to enable req.files
-const router = require("./routes");
-const { errorHandler, notFoundURLHandler } = require("./middlewares/errors");
+const router = require("./src/routes");
+const { errorHandler, notFoundURLHandler } = require("./src/middlewares/errors");
 
 /* Make/initiate expess application */
 const app = express();

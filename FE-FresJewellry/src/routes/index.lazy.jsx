@@ -9,7 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import productImage from "@/assets/image1.png";
-import { Card, CardContent } from "@/components/ui/card";
+import { ProductCard } from "@/components/Product-Card"; // Import the new component
 import { Button } from "@/components/ui/button";
 
 export const Route = createLazyFileRoute("/")({
@@ -200,27 +200,7 @@ function RouteComponent() {
                       key={i}
                       className="min-w-[100%] sm:min-w-[50%] md:min-w-[33.33%] lg:min-w-[25%] xl:min-w-[20%] flex-[0_0_auto] flex justify-center"
                     >
-                      <Card className="w-64 sm:w-72 shadow-lg border rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300">
-                        <CardContent className="p-4 flex flex-col items-center">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="h-32 sm:h-40 w-32 sm:w-40 object-cover rounded-lg hover"
-                          />
-                          <h3 className="mt-2 text-md sm:text-lg font-semibold text-center">
-                            {product.name}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-gray-500 text-center mt-1">
-                            {product.description}
-                          </p>
-                          <p className="text-md sm:text-lg font-bold text-center mt-2">
-                            {product.price}
-                          </p>
-                          <Button className="mt-3 w-full bg-[#CB9531] hover:bg-[#6C4C35] text-white py-2 rounded-md">
-                            Add to Cart
-                          </Button>
-                        </CardContent>
-                      </Card>
+                      <ProductCard product={product} /> {/* Use the new component */}
                     </CarouselItem>
                   ))}
                 </CarouselContent>

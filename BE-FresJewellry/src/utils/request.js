@@ -1,4 +1,4 @@
-class BadRequestError extends Error {
+export class BadRequestError extends Error {
   constructor(errors) {
     super("Validation failed!");
     this.errors = errors;
@@ -6,7 +6,7 @@ class BadRequestError extends Error {
   }
 }
 
-class NotFoundError extends Error {
+export class NotFoundError extends Error {
   constructor(message) {
     if (message) {
       super(message);
@@ -17,7 +17,7 @@ class NotFoundError extends Error {
   }
 }
 
-class InternalServerError extends Error {
+export class InternalServerError extends Error {
   constructor(errors) {
     super("Internal Server Error");
     this.status = 500;
@@ -25,7 +25,7 @@ class InternalServerError extends Error {
   }
 }
 
-class Unauthorized extends Error {
+export class Unauthorized extends Error {
   constructor(message) {
     if (message) {
       super(message);
@@ -36,7 +36,7 @@ class Unauthorized extends Error {
   }
 }
 
-class Forbidden extends Error {
+export class Forbidden extends Error {
   constructor(message) {
     if (message) {
       super(message);
@@ -46,11 +46,3 @@ class Forbidden extends Error {
     this.status = 403;
   }
 }
-
-module.exports = {
-  BadRequestError,
-  NotFoundError,
-  InternalServerError,
-  Unauthorized,
-  Forbidden,
-};

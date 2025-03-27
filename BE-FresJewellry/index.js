@@ -1,34 +1,37 @@
-require("dotenv").config(); // To enable .env called
-const express = require("express"); // Import express with non-module
-require("express-async-errors");
-const fileUpload = require("express-fileupload"); // This package is to enable req.files
-const router = require("./src/routes");
-const { errorHandler, notFoundURLHandler } = require("./src/middlewares/errors");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import bodyParser from "body-parser";
+import sequelize from "./src/db/db.js"; // Import koneksi database
+import User from "./src/models/user.model.js"; // Import model User
+import authRoutes from "./src/routes/authRoutes.js";
 
-/* Make/initiate expess application */
+dotenv.config();
+
 const app = express();
-const port = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
 
-/* We need to activate body parser/reader (req.body) */
 app.use(express.json());
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
+app.use("/api/auth", authRoutes);
 
-/* We need to read form-body (body parser/reader) (req.files) if you want upload file */
-app.use(
-  fileUpload({
-    limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB
-  })
-);
-
-// All routes define here
-app.use("/", router);
-
-// This function is for 404 handle URL
-app.use("*", notFoundURLHandler);
-
-// This function is to handle error when API hit, it always be the last middleware
-app.use(errorHandler);
-
-/* Run the express.js application */
-app.listen(port, () => {
-  console.log(`The express.js app is runing on port ${port}`);
+app.get("/", (req, res) => {
+  res.send("Hello Ontong");
 });
+
+// 🔄 **Sinkronisasi Database**
+sequelize
+  .sync({ force: false }) // Ubah `true` jika ingin reset tabel setiap restart
+  .then(() => {
+    console.log("Database connected and synced!");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Database connection failed:", error);
+  });
+
+export default app;

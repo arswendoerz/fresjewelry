@@ -1,3 +1,4 @@
+/*
 const express = require("express");
 const {
   validateGetProducts,
@@ -29,3 +30,4 @@ router
   .delete(validateDeleteProductById, deleteProductById);
 
 module.exports = router;
+*/

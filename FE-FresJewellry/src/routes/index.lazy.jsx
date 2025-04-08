@@ -9,8 +9,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import productImage from "@/assets/image1.png";
-import { ProductCard } from "@/components/Product-Card"; // Import the new component
-import { Button } from "@/components/ui/button";
+import { ProductCard } from "@/components/Product-Card";
 
 export const Route = createLazyFileRoute("/")({
   component: RouteComponent,
@@ -168,39 +167,39 @@ function RouteComponent() {
         alt="Homepage Image"
         className="w-full h-auto object-cover"
       />
-      <p className="text-center text-xl sm:text-xl md:text-2xl font-semibold mt-16 px-3 max-w-6xl mx-auto leading-relaxed text-[#6C4C35]">
+      <p className="text-center text-xl sm:text-xl md:text-2xl font-semibold mt-12 px-3 max-w-6xl mx-auto leading-relaxed text-[#6C4C35]">
         Experience unparalleled luxury with our exquisite jewelry collection,
         crafted with elegance and intricate details that radiate timeless beauty
         a perfect symbol of prestige and sophistication for your most precious
         moments.
       </p>
 
-      <div className="mt-10 p-4">
-        <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold mb-12">
+      <div className="mt-8 p-4">
+        <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold mb-8">
           Our Products
         </h2>
 
         {categories.map((category, index) => (
-          <div key={index} className="mt-8">
-            <h3 className="flex justify-between text-2xl sm:text-3xl md:text-4xl font-bold text-left ml-25 mr-25 mb-4">
+          <div key={index} className="mt-0 mb-0">
+            <h3 className="flex justify-between text-2xl sm:text-3xl md:text-4xl font-bold text-left ml-25 mr-25 mb-0">
               {category.title}
               <Link
-                to={`/products/${category.title.toLowerCase()}`}
+                to={`/product/`}
                 className="text-lg sm:text-xl text-black hover:text-[#CB9531] transition-all duration-500 flex items-center"
               >
                 <span className="hidden sm:inline">More</span>
                 <ArrowRight className="w-5 h-5 sm:hidden ml-2" />
               </Link>
             </h3>
-            <div className="flex justify-center mt-6">
-              <Carousel className="w-full max-w-7xl">
-                <CarouselContent className="flex gap-4 md:gap-2 sm:gap-1">
+            <div className="flex justify-center mt-0">
+              <Carousel className="w-full max-w-7xl h-[600px]">
+                <CarouselContent className="flex gap-4 md:gap-6 lg:gap-8 h-[500px]">
                   {category.products.map((product, i) => (
                     <CarouselItem
                       key={i}
-                      className="min-w-[100%] sm:min-w-[50%] md:min-w-[33.33%] lg:min-w-[25%] xl:min-w-[20%] flex-[0_0_auto] flex justify-center"
+                      className="min-w-[100%] sm:min-w-[50%] md:min-w-[33.33%] lg:min-w-[25%] xl:min-w-[20%] flex-[0_0_auto] flex items-center justify-center h-full"
                     >
-                      <ProductCard product={product} /> {/* Use the new component */}
+                      <ProductCard product={product} />
                     </CarouselItem>
                   ))}
                 </CarouselContent>

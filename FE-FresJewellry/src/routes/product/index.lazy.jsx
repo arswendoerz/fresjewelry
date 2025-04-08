@@ -1,28 +1,11 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Toaster } from "react-hot-toast";
+import { ProductCard } from "@/components/Product-Card";
 import productImage from "@/assets/image1.png";
-import toast, { Toaster } from "react-hot-toast";
-import { FaRupiahSign } from "react-icons/fa6";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-// Data produk
+// Dummy data
 const products = [
   {
     id: 1,
@@ -114,79 +97,136 @@ const products = [
     image: productImage,
     category: "Necklace",
   },
+  {
+    id: 11,
+    name: "Minimalist Gold Ring",
+    description:
+      "A simple yet elegant minimalist gold ring, perfect for everyday wear.",
+    price: "599.000",
+    image: productImage,
+    category: "Ring",
+  },
+  {
+    id: 12,
+    name: "Pearl Stud Earrings",
+    description:
+      "Classic pearl stud earrings that never go out of style, ideal for formal occasions.",
+    price: "399.000",
+    image: productImage,
+    category: "Earrings",
+  },
+  {
+    id: 13,
+    name: "Silver Infinity Bracelet",
+    description:
+      "Symbolizing eternal love, this silver infinity bracelet is delicate and meaningful.",
+    price: "749.000",
+    image: productImage,
+    category: "Bracelet",
+  },
+  {
+    id: 14,
+    name: "Gold Chain Necklace",
+    description:
+      "A timeless gold chain necklace that pairs effortlessly with any outfit.",
+    price: "1.299.000",
+    image: productImage,
+    category: "Necklace",
+  },
+  {
+    id: 15,
+    name: "Crystal Drop Earrings",
+    description:
+      "Dangling crystal earrings that sparkle with every movement, perfect for night events.",
+    price: "549.000",
+    image: productImage,
+    category: "Earrings",
+  },
+  {
+    id: 16,
+    name: "Twisted Gold Ring",
+    description:
+      "A unique twisted gold ring design that stands out with subtle charm.",
+    price: "849.000",
+    image: productImage,
+    category: "Ring",
+  },
+  {
+    id: 17,
+    name: "Leather Charm Bracelet",
+    description:
+      "A trendy leather bracelet with metal charms, ideal for a casual chic look.",
+    price: "499.000",
+    image: productImage,
+    category: "Bracelet",
+  },
+  {
+    id: 18,
+    name: "Moonstone Pendant Necklace",
+    description:
+      "A dreamy moonstone pendant on a fine chain, radiating soft and mystical vibes.",
+    price: "1.099.000",
+    image: productImage,
+    category: "Necklace",
+  },
+  {
+    id: 19,
+    name: "Vintage Filigree Ring",
+    description:
+      "An antique-style filigree ring crafted with detailed craftsmanship.",
+    price: "1.299.000",
+    image: productImage,
+    category: "Ring",
+  },
+  {
+    id: 20,
+    name: "Geometric Hoop Earrings",
+    description:
+      "Modern geometric hoops that bring a contemporary edge to your accessories.",
+    price: "459.000",
+    image: productImage,
+    category: "Earrings",
+  },
+  {
+    id: 21,
+    name: "Ruby Heart Pendant Necklace",
+    description:
+      "A captivating ruby heart pendant necklace in white gold, symbolizing love and passion.",
+    price: "1.899.000",
+    image: productImage,
+    category: "Necklace",
+  },
+  {
+    id: 22,
+    name: "Diamond Halo Engagement Ring",
+    description:
+      "A breathtaking diamond halo engagement ring that shines with brilliance and elegance.",
+    price: "3.999.000",
+    image: productImage,
+    category: "Ring",
+  },
 ];
 
-// Definisikan rute dengan createLazyFileRoute
 export const Route = createLazyFileRoute("/product/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedSize, setSelectedSize] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState(null);
-  const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem("cartItems");
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
-
+  const [visibleCount, setVisibleCount] = useState(8); // inisialiasi show 8
+  const productsPerLoad = 8; // jumlah load
   const categories = ["All", "Ring", "Necklace", "Earrings", "Bracelet"];
-
-  // Simpan ke localStorage setiap kali cartItems berubah
-  useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  // Filter produk berdasarkan kategori
   const filteredProducts =
     selectedCategory === "All"
       ? products
       : products.filter((product) => product.category === selectedCategory);
 
-  // Fungsi untuk menambah produk ke keranjang
-  const handleAddToCart = (productName, size) => {
-    const product = products.find((p) => p.name === productName);
-    const newItem = {
-      ...product,
-      size,
-      quantity: 1,
-      cartId: `${product.id}-${size}-${Date.now()}`, // ID unik untuk item di keranjang
-    };
+  const visibleProducts = filteredProducts.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredProducts.length;
 
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find(
-        (item) => item.id === product.id && item.size === size
-      );
-
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.id === existingItem.id && item.size === size
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prevItems, newItem];
-    });
-
-    toast.success(
-      `${productName} (Size: ${size}) has been added to your cart!`,
-      {
-        position: "top-right",
-        duration: 3000,
-      }
-    );
-    setOpenDialog(false);
-    setSelectedSize("");
+  const handleLoadMore = () => {
+    setVisibleCount((prevCount) => prevCount + productsPerLoad);
   };
-
-  const openAddToCartDialog = (product) => {
-    setCurrentProduct(product);
-    setOpenDialog(true);
-  };
-
-  // Logging untuk debugging
-  console.log("Rendering RouteComponent, productImage:", productImage);
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-[1200px]">
@@ -197,12 +237,14 @@ function RouteComponent() {
           <Button
             key={category}
             variant={selectedCategory === category ? "default" : "outline"}
-            onClick={() => setSelectedCategory(category)}
-            className={`${
-              selectedCategory === category
-                ? "bg-[#CB9531] hover:bg-[#6C4C35] text-white"
-                : "border-black"
-            } transition-colors min-w-[80px]`}
+            onClick={() => {
+              setSelectedCategory(category);
+              setVisibleCount(8);
+            }}
+            className={`${selectedCategory === category
+              ? "bg-[#CB9531] hover:bg-[#6C4C35] text-white"
+              : "border-black"
+              } transition-colors min-w-[80px]`}
           >
             {category}
           </Button>
@@ -210,91 +252,27 @@ function RouteComponent() {
       </div>
 
       {/* Card Products */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-        {filteredProducts.map((product) => (
-          <Card key={product.id} className="w-[350px] h-[500px]">
-            <CardHeader>
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-[200px] object-cover rounded-t-lg"
-              />
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-sm text-gray-600 h-[90px] text-justify">
-                  {product.description}
-                </p>
-                <p className="text-lg font-bold">
-                  <FaRupiahSign className="inline mr-1" /> {product.price}
-                </p>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Dialog
-                open={openDialog && currentProduct?.id === product.id}
-                onOpenChange={setOpenDialog}
-              >
-                <DialogTrigger asChild>
-                  <Button
-                    className="w-full bg-[#CB9531] hover:bg-[#6C4C35] text-white transition-colors"
-                    onClick={() => openAddToCartDialog(product)}
-                  >
-                    Add to Cart
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Add {product.name} to Cart</DialogTitle>
-                    <DialogDescription>
-                      Please select a size for your{" "}
-                      {product.category.toLowerCase()}.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <RadioGroup
-                      value={selectedSize}
-                      onValueChange={setSelectedSize}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="S" id="size-s" />
-                        <Label htmlFor="size-s">Small</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="M" id="size-m" />
-                        <Label htmlFor="size-m">Medium</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="L" id="size-l" />
-                        <Label htmlFor="size-l">Large</Label>
-                      </div>
-                    </RadioGroup>
-                  </div>
-                  <DialogFooter>
-                    <Button
-                      variant="outline"
-                      onClick={() => setOpenDialog(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      className="bg-[#85986d] hover:bg-[#6b7a56] text-white"
-                      onClick={() =>
-                        selectedSize &&
-                        handleAddToCart(product.name, selectedSize)
-                      }
-                      disabled={!selectedSize}
-                    >
-                      Add
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </CardFooter>
-          </Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-14 justify-items-center">
+        {visibleProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
-    </div>
+
+      {/* Load More Button or Message */}
+      <div className="mt-8 flex justify-center">
+        {hasMore ? (
+          <p
+            onClick={handleLoadMore}
+            className="cursor-pointer text-[#CB9531] hover:text-[#6C4C35] "
+          >
+            <strong>Load More</strong>
+          </p>
+        ) : (
+          <p className="text-black cursor-pointer">
+            Nothing more to load
+          </p>
+        )}
+      </div>
+    </div >
   );
 }

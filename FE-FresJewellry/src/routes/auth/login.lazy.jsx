@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import ReactLoading from "react-loading";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
+import { useAuthStore } from "@/store/authStore";
 
 export const Route = createLazyFileRoute("/auth/login")({
   component: Login,
@@ -12,8 +13,10 @@ export const Route = createLazyFileRoute("/auth/login")({
 
 function Login() {
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
   const [formData, setFormData] = useState({
     emailOrPhone: "",
     password: "",
@@ -27,14 +30,21 @@ function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      console.log("Login successful with:", formData);
-      setIsLoading(false);
+    setApiError("");
+
+    try {
+      await login(formData.emailOrPhone, formData.password);
       navigate({ to: "/" });
-    }, 1500);
+    } catch (error) {
+      setApiError(error.response?.data?.message || "Login failed");
+      setIsLoading(false);
+      return;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const isFormFilled =
@@ -97,6 +107,13 @@ function Login() {
                   </button>
                 </div>
               </div>
+
+              {apiError && (
+                <p className="text-red-600 text-sm text-center -mt-4">
+                  {apiError}
+                </p>
+              )}
+
               <Button
                 type="submit"
                 className="w-full rounded-lg mt-3 bg-[#CB9531] text-white h-12 hover:bg-[#6C4C35] transition-all duration-300"

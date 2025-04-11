@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import ReactLoading from "react-loading";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { useAuthStore } from "@/store/authStore";
+import ErrorModal from "@/components/ErrorModal/ErrorModal";
 
 export const Route = createLazyFileRoute("/auth/register")({
   component: Register,
@@ -12,10 +14,14 @@ export const Route = createLazyFileRoute("/auth/register")({
 
 function Register() {
   const navigate = useNavigate();
+  const register = useAuthStore((state) => state.register);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [apiError, setApiError] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
   const [formData, setFormData] = useState({
     name: "",
     address: "",
@@ -54,18 +60,47 @@ function Register() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (formData.password !== formData.confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
     }
+
     setIsLoading(true);
-    setTimeout(() => {
+    setApiError("");
+    setShowErrorModal(false);
+
+    try {
+      await register(
+        formData.email,
+        formData.password,
+        formData.name,
+        formData.address,
+        formData.phoneNumber,
+        formData.profilePicture
+      );
+
+      // hanya navigasi jika register berhasil
       console.log("Registration successful with:", formData);
-      setIsLoading(false);
       navigate({ to: "/auth/login" });
-    }, 1500);
+    } catch (error) {
+      console.error("Registration failed:", error);
+
+      if (
+        error.response &&
+        error.response.data &&
+        error?.response?.data?.message
+      ) {
+        setApiError(error.response.data.message);
+      } else {
+        setApiError("Registration failed. Please try again.");
+      }
+      setShowErrorModal(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const isFormFilled =
@@ -256,6 +291,13 @@ function Register() {
                 )}
               </div>
 
+              {/* Error message */}
+              {apiError && (
+                <p className="text-red-500 text-sm text-center bg-red-100 p-2 rounded-md">
+                  {apiError}
+                </p>
+              )}
+
               {/* Register Button */}
               <Button
                 type="submit"
@@ -288,6 +330,12 @@ function Register() {
           </div>
         </div>
       </div>
+      <ErrorModal
+        isOpen={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        title="Registration Error"
+        message={apiError}
+      />
     </main>
   );
 }

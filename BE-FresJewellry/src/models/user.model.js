@@ -19,7 +19,7 @@ const User = sequelize.define(
     },
     phoneNumber: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     profilePicture: {
       type: DataTypes.STRING,

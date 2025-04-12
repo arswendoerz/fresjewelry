@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { createLazyFileRoute } from "@tanstack/react-router";
+import React, { useEffect, useState } from "react";
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -18,6 +18,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { TbLogout } from "react-icons/tb";
 import { FiEdit3 } from "react-icons/fi";
 import arswendoImage from "@/assets/Arswendo.jpeg";
+import { useAuthStore } from "@/store/authStore";
 
 export const Route = createLazyFileRoute("/account/")({
   component: Account,
@@ -26,15 +27,35 @@ export const Route = createLazyFileRoute("/account/")({
 function Account() {
   // const navigate = useNavigate();
 
-  const [namaLengkap, setNamaLengkap] = useState("Armando Yuviano");
-  const [nomorTelepon, setNomorTelepon] = useState("+62 897823232");
-  const [email] = useState("GhebiCayankDiaCelalu@gmail.com");
-  const [address, setAddress] = useState("Tandus Pariaman");
+  const [namaLengkap, setNamaLengkap] = useState("");
+  const [nomorTelepon, setNomorTelepon] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [profilePicture, setProfilePicture] = useState("");
+  const navigate = useNavigate();
 
   const handleNamaLengkapChange = (event) => setNamaLengkap(event.target.value);
-  const handleNomorTeleponChange = (event) => setNomorTelepon(event.target.value);
+  const handleNomorTeleponChange = (event) =>
+    setNomorTelepon(event.target.value);
   // const handleEmailChange = (event) => setEmail(event.target.value);
   const handleAddressChange = (event) => setAddress(event.target.value);
+  const { user, checkAuth } = useAuthStore();
+  const { logout } = useAuthStore((state) => state.logout);
+
+  useEffect(() => {
+    checkAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      setNamaLengkap(user.name || "");
+      setNomorTelepon(user.phoneNumber || "");
+      setEmail(user.email || "");
+      setAddress(user.address || "");
+      setProfilePicture(user.profilePicture || "");
+    }
+  }, [user]);
 
   const handleSave = () => {
     console.log({
@@ -46,8 +67,14 @@ function Account() {
     toast.success("Data has been saved!");
   };
 
-  const handleLogout = () => {
-    toast.success("You have been logged out!");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      console.log("Berhasil logout");
+      navigate({ to: "/auth/login" });
+    } catch (err) {
+      console.error("Gagal logout:", err);
+    }
   };
 
   return (
@@ -62,7 +89,11 @@ function Account() {
       <div className="flex flex-col lg:flex-row mt-[20px]">
         <div className="w-full lg:w-2/6 mb-4 lg:mb-0 flex flex-col items-center">
           <img
-            src={arswendoImage}
+            src={
+              profilePicture
+                ? `http://localhost:5000/uploads/${profilePicture}`
+                : arswendoImage
+            }
             alt="Profile"
             className="w-24 h-24 rounded-full border-2 border-[#CB9531] mb-4"
           />
@@ -82,7 +113,9 @@ function Account() {
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Sign out of your account?</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      Sign out of your account?
+                    </AlertDialogTitle>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel className="bg-red-500 hover:bg-red-800 hover:text-white text-white">
@@ -122,7 +155,10 @@ function Account() {
               <Input value={address} onChange={handleAddressChange} />
             </div>
             <div className="flex justify-center">
-              <Button className="bg-[#CB9531] hover:bg-[#6C4C35] text-white" onClick={handleSave}>
+              <Button
+                className="bg-[#CB9531] hover:bg-[#6C4C35] text-white"
+                onClick={handleSave}
+              >
                 Save
               </Button>
             </div>

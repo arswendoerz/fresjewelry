@@ -1,6 +1,12 @@
 import express from "express";
 import multer from "multer";
-import { register, login, logout } from "../controllers/authControllers.js";
+import {
+  register,
+  login,
+  logout,
+  getCurrentUser,
+} from "../controllers/authControllers.js";
+import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -17,5 +23,6 @@ const upload = multer({ storage });
 router.post("/register", upload.single("profilePicture"), register);
 router.post("/login", login);
 router.post("/logout", logout);
+router.get("/checkAuth", getCurrentUser, verifyToken);
 
 export default router;

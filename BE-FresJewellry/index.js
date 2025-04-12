@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import sequelize from "./src/db/db.js"; // Import koneksi database
 import User from "./src/models/user.model.js"; // Import model User
 import authRoutes from "./src/routes/authRoutes.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -16,9 +17,15 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true })); // CORS u
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", authRoutes);
+app.use(cookieParser()); // Middleware untuk cookie
 
 app.get("/", (req, res) => {
   res.send("Hello Ontong");
+});
+
+app.post("/logout", (req, res) => {
+  res.clearCookie("token");
+  toast.success("You have logged out successfully");
 });
 
 // 🔄 **Sinkronisasi Database**

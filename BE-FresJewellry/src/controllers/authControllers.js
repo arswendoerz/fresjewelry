@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
 import { generateTokenSetCookie } from "../utils/generateTokenSetCookie.js";
+import { Op } from "sequelize";
 // import { sendVerificationEmail } from "../mailtrap/emails.js";
 
 export const register = async (req, res) => {
@@ -69,10 +70,21 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { emailOrPhone, password } = req.body;
+
+    if (!emailOrPhone || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email/Phone and password are required",
+      });
+    }
 
     // Cek apakah user terdaftar
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ email: emailOrPhone }, { phoneNumber: emailOrPhone }],
+      },
+    });
     if (!user) {
       return res
         .status(400)
@@ -102,4 +114,38 @@ export const login = async (req, res) => {
 export const logout = async (req, res) => {
   res.cookie("token", "", { httpOnly: true, expires: new Date(0) });
   return res.status(200).json({ success: true, message: "Logout successful" });
+};
+
+export const getCurrentUser = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const user = await User.findByPk(userId, {
+      attributes: [
+        "id",
+        "name",
+        "email",
+        "address",
+        "phoneNumber",
+        "profilePicture",
+      ],
+    });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    return res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.error("Error getting current user:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
+  }
 };

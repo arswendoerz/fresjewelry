@@ -57,11 +57,18 @@ export const useAuthStore = create((set) => ({
       formData.append("emailOrPhone", emailOrPhone);
       formData.append("password", password);
 
-      const response = await axios.post(`${API_URL}/login`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const response = await axios.post(
+        `${API_URL}/login`,
+        {
+          emailOrPhone,
+          password,
         },
-      });
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       set({
         user: response.data.user,
@@ -110,6 +117,25 @@ export const useAuthStore = create((set) => ({
       });
     } catch {
       set({ error: null, isCheckingAuth: false, isAuthenticated: false });
+    }
+  },
+
+  logout: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      await axios.post(`${API_URL}/logout`);
+      set({
+        user: null,
+        isAuthenticated: false,
+        token: null,
+        isLoading: false,
+      });
+    } catch (error) {
+      set({
+        error: error.response?.data?.message || "Logout failed",
+        isLoading: false,
+      });
+      throw error;
     }
   },
 }));

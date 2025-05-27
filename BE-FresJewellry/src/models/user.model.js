@@ -27,6 +27,7 @@ const User = sequelize.define(
     },
     lastLogin: {
       type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
     isVerified: {
       type: DataTypes.BOOLEAN,
@@ -35,6 +36,7 @@ const User = sequelize.define(
     resetPasswordToken: {
       type: DataTypes.STRING,
       allowNull: true,
+      unique: true,
     },
     resetPasswordExpiresAt: {
       type: DataTypes.DATE,
@@ -43,13 +45,14 @@ const User = sequelize.define(
     verificationToken: {
       type: DataTypes.STRING,
       allowNull: true,
+      unique: true,
     },
     verificationTokenExpiresAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, underscored: true }
 );
 
 export default User;

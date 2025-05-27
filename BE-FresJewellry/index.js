@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import sequelize from "./src/db/db.js"; // Import koneksi database
 import User from "./src/models/user.model.js"; // Import model User
 import authRoutes from "./src/routes/authRoutes.js";
+import cartRoutes from "./src/routes/cartRoutes.js"; // Import route cart
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true })); // CORS u
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", authRoutes);
+app.use("/api/cart", cartRoutes);
 app.use(cookieParser()); // Middleware untuk cookie
 
 app.get("/", (req, res) => {

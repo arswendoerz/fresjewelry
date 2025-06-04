@@ -15,12 +15,6 @@ export const Route = createLazyFileRoute("/auth/register")({
 function Register() {
   const navigate = useNavigate();
   const register = useAuthStore((state) => state.register);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
-  const [apiError, setApiError] = useState("");
-  const [showErrorModal, setShowErrorModal] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -32,12 +26,20 @@ function Register() {
     confirmPassword: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [apiError, setApiError] = useState("");
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
     if (name === "profilePicture") {
       setFormData((prev) => ({
         ...prev,
-        [name]: files[0],
+        [name]: files[0] || null,
       }));
     } else {
       setFormData((prev) => ({
@@ -46,8 +48,13 @@ function Register() {
       }));
     }
 
+    // Password matching validation live
     if (name === "password" || name === "confirmPassword") {
-      const updatedForm = { ...formData, [name]: value };
+      const updatedForm = {
+        ...formData,
+        [name]: name === "profilePicture" ? files[0] : value,
+      };
+
       if (
         updatedForm.password &&
         updatedForm.confirmPassword &&
@@ -63,6 +70,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Final password match check
     if (formData.password !== formData.confirmPassword) {
       setPasswordError("Passwords do not match");
       return;
@@ -82,7 +90,6 @@ function Register() {
         formData.profilePicture
       );
 
-      // hanya navigasi jika register berhasil
       console.log("Registration successful with:", formData);
       navigate({ to: "/auth/login" });
     } catch (error) {
@@ -91,12 +98,15 @@ function Register() {
       if (
         error.response &&
         error.response.data &&
-        error?.response?.data?.message
+        error.response.data.message
       ) {
         setApiError(error.response.data.message);
+      } else if (error.message) {
+        setApiError(error.message);
       } else {
         setApiError("Registration failed. Please try again.");
       }
+
       setShowErrorModal(true);
     } finally {
       setIsLoading(false);
@@ -330,6 +340,7 @@ function Register() {
           </div>
         </div>
       </div>
+
       <ErrorModal
         isOpen={showErrorModal}
         onClose={() => setShowErrorModal(false)}

@@ -7,8 +7,9 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { FaRupiahSign, FaTrash } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 import productImage from "../../assets/image1.png";
 
 export const Route = createLazyFileRoute("/shoppingCart/")({
@@ -16,110 +17,76 @@ export const Route = createLazyFileRoute("/shoppingCart/")({
 });
 
 function ShoppingCartComponent() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: "1-S-1710748800000",
-      name: "Gold Ring with Ronce Accessories",
-      price: "1.199.000",
-      size: "S",
-      quantity: 1,
-      image: productImage,
-    },
-    {
-      id: "2-M-1710748800001",
-      name: "Silver Necklace with Gemstone",
-      price: "799.000",
-      size: "M",
-      quantity: 2,
-      image: productImage,
-    },
-    {
-      id: "3-L-1710748800002",
-      name: "Rose Gold Earrings",
-      price: "499.000",
-      size: "L",
-      quantity: 1,
-      image: productImage,
-    },
-    {
-      id: "4-M-1710748800003",
-      name: "Diamond Bracelet",
-      price: "2.499.000",
-      size: "M",
-      quantity: 1,
-      image: productImage,
-    },
-    {
-      id: "5-S-1710748800004",
-      name: "Classic Pearl Ring",
-      price: "999.000",
-      size: "S",
-      quantity: 3,
-      image: productImage,
-    },
-    {
-      id: "6-L-1710748800005",
-      name: "Emerald Pendant Necklace",
-      price: "1.799.000",
-      size: "L",
-      quantity: 1,
-      image: productImage,
-    },
-    {
-      id: "7-M-1710748800006",
-      name: "Sapphire Stud Earrings",
-      price: "699.000",
-      size: "M",
-      quantity: 2,
-      image: productImage,
-    },
-    {
-      id: "8-S-1710748800007",
-      name: "Platinum Wedding Band",
-      price: "3.299.000",
-      size: "S",
-      quantity: 1,
-      image: productImage,
-    },
-    {
-      id: "9-L-1710748800008",
-      name: "Ruby Choker Necklace",
-      price: "2.999.000",
-      size: "L",
-      quantity: 1,
-      image: productImage,
-    },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const removeFromCart = (itemId) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-    toast.success("Item removed from cart!", {
-      position: "top-right",
-      duration: 3000,
-      style: {
-        background: "#CB9531",
-        color: "#fff",
-      },
-    });
+  // Fetch cart items from API
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/cart");
+        setCartItems(response.data);
+      } catch (error) {
+        toast.error("Failed to fetch cart items!", {
+          position: "top-right",
+          style: { background: "#CB9531", color: "#fff" },
+        });
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCartItems();
+  }, []);
+
+  const removeFromCart = async (itemId) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/cart/${itemId}`);
+      setCartItems((prevItems) =>
+        prevItems.filter((item) => item.id !== itemId)
+      );
+      toast.success("Item removed from cart!", {
+        position: "top-right",
+        duration: 3000,
+        style: { background: "#CB9531", color: "#fff" },
+      });
+    } catch {
+      toast.error("Failed to remove item!", {
+        position: "top-right",
+        style: { background: "#CB9531", color: "#fff" },
+      });
+    }
   };
 
-  const updateQuantity = (itemId, newQuantity) => {
+  const updateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) {
       removeFromCart(itemId);
       return;
     }
 
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      )
-    );
+    try {
+      await axios.put(`http://localhost:3000/api/cart/${itemId}`, {
+        quantity: newQuantity,
+      });
+
+      setCartItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === itemId ? { ...item, quantity: newQuantity } : item
+        )
+      );
+    } catch {
+      toast.error("Failed to update quantity!", {
+        position: "top-right",
+        style: { background: "#CB9531", color: "#fff" },
+      });
+    }
   };
 
   const calculateTotal = () => {
     return cartItems
       .reduce((total, item) => {
-        const price = parseFloat(item.price.replace(".", ""));
+        const price = parseFloat(item.price.toString().replace(/\./g, ""));
         return total + price * item.quantity;
       }, 0)
       .toLocaleString("id-ID");
@@ -134,7 +101,9 @@ function ShoppingCartComponent() {
 
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex-1 space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-4">
-          {cartItems.length === 0 ? (
+          {loading ? (
+            <p className="text-center text-gray-500">Loading cart items...</p>
+          ) : cartItems.length === 0 ? (
             <div className="text-center py-12 bg-gray-50 rounded-lg shadow-sm">
               <p className="text-gray-600 text-lg mb-4">Your cart is empty</p>
               <Button
@@ -152,7 +121,7 @@ function ShoppingCartComponent() {
               >
                 <CardHeader className="p-3 w-full sm:w-auto">
                   <img
-                    src={item.image}
+                    src={item.image || productImage}
                     alt={item.name}
                     className="w-full sm:w-24 h-24 object-cover rounded-lg transition-transform duration-300 hover:scale-105"
                   />
@@ -202,7 +171,7 @@ function ShoppingCartComponent() {
           )}
         </div>
 
-        {cartItems.length > 0 && (
+        {cartItems.length > 0 && !loading && (
           <Card className="w-full lg:w-[350px] shadow-md border-t-4 border-[#CB9531] sticky top-16 h-fit">
             <CardContent className="p-4">
               <h2 className="text-lg font-semibold text-[#CB9531] mb-3">
@@ -233,10 +202,7 @@ function ShoppingCartComponent() {
                   toast.success("Proceeding to checkout!", {
                     position: "top-right",
                     duration: 3000,
-                    style: {
-                      background: "#CB9531",
-                      color: "#fff",
-                    },
+                    style: { background: "#CB9531", color: "#fff" },
                   })
                 }
               >

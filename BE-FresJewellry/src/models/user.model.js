@@ -52,7 +52,7 @@ const User = sequelize.define(
       allowNull: true,
     },
   },
-  { timestamps: true, underscored: true }
+  { timestamps: true }
 );
 
 export default User;

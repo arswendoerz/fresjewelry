@@ -25,22 +25,22 @@ export const Route = createLazyFileRoute("/account/")({
 });
 
 function Account() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [namaLengkap, setNamaLengkap] = useState("");
   const [nomorTelepon, setNomorTelepon] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
-  const navigate = useNavigate();
 
-  const handleNamaLengkapChange = (event) => setNamaLengkap(event.target.value);
-  const handleNomorTeleponChange = (event) =>
-    setNomorTelepon(event.target.value);
-  // const handleEmailChange = (event) => setEmail(event.target.value);
-  const handleAddressChange = (event) => setAddress(event.target.value);
-  const { user, checkAuth } = useAuthStore();
-  const { logout } = useAuthStore((state) => state.logout);
+  const {
+    user,
+    checkAuth,
+    logout,
+    isCheckingAuth,
+    isAuthenticated,
+    updateProfile,
+  } = useAuthStore();
 
   useEffect(() => {
     checkAuth();
@@ -57,25 +57,47 @@ function Account() {
     }
   }, [user]);
 
-  const handleSave = () => {
-    console.log({
-      namaLengkap,
-      nomorTelepon,
-      email,
-      address,
-    });
-    toast.success("Data has been saved!");
+  // Handling loading auth dan redirect kalau belum login
+  useEffect(() => {
+    if (!isCheckingAuth && !isAuthenticated) {
+      navigate("/auth/login");
+    }
+  }, [isCheckingAuth, isAuthenticated, navigate]);
+
+  if (isCheckingAuth) {
+    return <div className="text-center py-20">Loading...</div>;
+  }
+  const handleNamaLengkapChange = (e) => setNamaLengkap(e.target.value);
+  const handleNomorTeleponChange = (e) => setNomorTelepon(e.target.value);
+  const handleAddressChange = (e) => setAddress(e.target.value);
+
+  const handleSave = async () => {
+    try {
+      await updateProfile({
+        name: namaLengkap,
+        phoneNumber: nomorTelepon,
+        address,
+      });
+      toast.success("Profile updated!");
+    } catch {
+      toast.error("Failed to update profile");
+    }
   };
 
   const handleLogout = async () => {
     try {
       await logout();
-      console.log("Berhasil logout");
+      toast.success("Logged out successfully");
       navigate({ to: "/auth/login" });
     } catch (err) {
-      console.error("Gagal logout:", err);
+      toast.error("Failed to logout");
+      console.error(err);
     }
   };
+
+  if (isCheckingAuth) {
+    return <div className="text-center py-20">Loading...</div>;
+  }
 
   return (
     <div className="font-poppins container mx-auto w-[90%] md:w-[70%] px-4 py-8">

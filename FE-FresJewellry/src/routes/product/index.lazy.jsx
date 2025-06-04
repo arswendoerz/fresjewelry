@@ -241,10 +241,11 @@ function RouteComponent() {
               setSelectedCategory(category);
               setVisibleCount(8);
             }}
-            className={`${selectedCategory === category
-              ? "bg-[#CB9531] hover:bg-[#6C4C35] text-white"
-              : "border-black"
-              } transition-colors min-w-[80px]`}
+            className={`${
+              selectedCategory === category
+                ? "bg-[#CB9531] hover:bg-[#6C4C35] text-white"
+                : "border-black"
+            } transition-colors min-w-[80px]`}
           >
             {category}
           </Button>
@@ -268,11 +269,9 @@ function RouteComponent() {
             <strong>Load More</strong>
           </p>
         ) : (
-          <p className="text-black cursor-pointer">
-            Nothing more to load
-          </p>
+          <p className="text-black cursor-pointer">Nothing more to load</p>
         )}
       </div>
-    </div >
+    </div>
   );
 }

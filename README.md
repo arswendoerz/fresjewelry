@@ -14,6 +14,7 @@ At **FRESJEWELRY**, we believe that every piece of jewelry has a story. Founded 
 From bracelets, rings, to straps designed exclusively, each piece is crafted by hand and with heart. More than just accessories, we create each product as a unique, authentic, and timeless expression of self.
 
 FresJewellry is a home for those who seek beauty in simplicity and value in every detail. We are proud to bring the warmth of local craftsmanship into your daily life, offering jewelry that is not only beautiful but also meaningful.
+
 ---
 
 ## Team Members

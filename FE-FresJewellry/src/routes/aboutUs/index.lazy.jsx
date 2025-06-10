@@ -6,6 +6,9 @@ import {
 import { Button } from '@/components/ui/button';
 import TeamCard from '@/components/TeamCard';
 import imageArswendo from '@/assets/Arswendo.jpeg';
+import imageGhebi from '@/assets/Ghebi.png';
+import imageAmando from '@/assets/Amando.jpg';
+import imageMelda from '@/assets/Melda.png';
 
 export const Route = createLazyFileRoute('/aboutUs/')({
   component: AboutUsComponent,
@@ -24,7 +27,8 @@ function AboutUsComponent() {
         FreshJewellry: Our Story
       </h1>
       <p className="text-xl text-gray-800 max-w-3xl text-center mb-16 leading-relaxed tracking-wide animate-fade-in">
-        FreshJewellry is more than just an e-commerce platform—it’s a revolution in beaded accessories born from the passion of four pioneers: Arswendo, Amando, Ghebi, and Melda. Each piece we craft blends creativity, boldness, and beauty to enhance your personal story.
+        Fres Jewelry is a jewelry company that offers a wide range of jewelry, from necklaces, rings, bracelets, to earrings.
+        Fres Jewelry is dedicated to creating pieces for today's young generation. Unique accessories are crafted from beads.
       </p>
 
       {/* Team Section */}
@@ -37,21 +41,21 @@ function AboutUsComponent() {
           instagramLink="https://www.instagram.com/arswendo.erz/"
         />
         <TeamCard
-          image={imageArswendo}
+          image={imageAmando}
           name="Amando"
           role="The Design Specialist"
           description="Crafting stunning visuals that define our unique style."
           instagramLink="https://www.instagram.com/amdyvx/"
         />
         <TeamCard
-          image={imageArswendo}
+          image={imageGhebi}
           name="Ghebi"
           role="The Developer"
           description="Engineering seamless experiences with technical expertise."
           instagramLink="https://www.instagram.com/ghebi_03/"
         />
         <TeamCard
-          image={imageArswendo}
+          image={imageMelda}
           name="Melda"
           role="The CEO"
           description="Leading FreshJewellry with vision and ambition."

@@ -22,6 +22,7 @@ const ProductIndexLazyImport = createFileRoute('/product/')()
 const NotificationIndexLazyImport = createFileRoute('/notification/')()
 const AccountIndexLazyImport = createFileRoute('/account/')()
 const AboutUsIndexLazyImport = createFileRoute('/aboutUs/')()
+const PaymentTransactionLazyImport = createFileRoute('/payment/transaction')()
 const AuthRegisterLazyImport = createFileRoute('/auth/register')()
 const AuthLoginLazyImport = createFileRoute('/auth/login')()
 
@@ -67,6 +68,14 @@ const AboutUsIndexLazyRoute = AboutUsIndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/aboutUs/index.lazy').then((d) => d.Route))
 
+const PaymentTransactionLazyRoute = PaymentTransactionLazyImport.update({
+  id: '/payment/transaction',
+  path: '/payment/transaction',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/payment/transaction.lazy').then((d) => d.Route),
+)
+
 const AuthRegisterLazyRoute = AuthRegisterLazyImport.update({
   id: '/auth/register',
   path: '/auth/register',
@@ -102,6 +111,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/register'
       fullPath: '/auth/register'
       preLoaderRoute: typeof AuthRegisterLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/payment/transaction': {
+      id: '/payment/transaction'
+      path: '/payment/transaction'
+      fullPath: '/payment/transaction'
+      preLoaderRoute: typeof PaymentTransactionLazyImport
       parentRoute: typeof rootRoute
     }
     '/aboutUs/': {
@@ -148,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/auth/register': typeof AuthRegisterLazyRoute
+  '/payment/transaction': typeof PaymentTransactionLazyRoute
   '/aboutUs': typeof AboutUsIndexLazyRoute
   '/account': typeof AccountIndexLazyRoute
   '/notification': typeof NotificationIndexLazyRoute
@@ -159,6 +176,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/auth/register': typeof AuthRegisterLazyRoute
+  '/payment/transaction': typeof PaymentTransactionLazyRoute
   '/aboutUs': typeof AboutUsIndexLazyRoute
   '/account': typeof AccountIndexLazyRoute
   '/notification': typeof NotificationIndexLazyRoute
@@ -171,6 +189,7 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/auth/login': typeof AuthLoginLazyRoute
   '/auth/register': typeof AuthRegisterLazyRoute
+  '/payment/transaction': typeof PaymentTransactionLazyRoute
   '/aboutUs/': typeof AboutUsIndexLazyRoute
   '/account/': typeof AccountIndexLazyRoute
   '/notification/': typeof NotificationIndexLazyRoute
@@ -184,6 +203,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth/login'
     | '/auth/register'
+    | '/payment/transaction'
     | '/aboutUs'
     | '/account'
     | '/notification'
@@ -194,6 +214,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth/login'
     | '/auth/register'
+    | '/payment/transaction'
     | '/aboutUs'
     | '/account'
     | '/notification'
@@ -204,6 +225,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth/login'
     | '/auth/register'
+    | '/payment/transaction'
     | '/aboutUs/'
     | '/account/'
     | '/notification/'
@@ -216,6 +238,7 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AuthLoginLazyRoute: typeof AuthLoginLazyRoute
   AuthRegisterLazyRoute: typeof AuthRegisterLazyRoute
+  PaymentTransactionLazyRoute: typeof PaymentTransactionLazyRoute
   AboutUsIndexLazyRoute: typeof AboutUsIndexLazyRoute
   AccountIndexLazyRoute: typeof AccountIndexLazyRoute
   NotificationIndexLazyRoute: typeof NotificationIndexLazyRoute
@@ -227,6 +250,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AuthLoginLazyRoute: AuthLoginLazyRoute,
   AuthRegisterLazyRoute: AuthRegisterLazyRoute,
+  PaymentTransactionLazyRoute: PaymentTransactionLazyRoute,
   AboutUsIndexLazyRoute: AboutUsIndexLazyRoute,
   AccountIndexLazyRoute: AccountIndexLazyRoute,
   NotificationIndexLazyRoute: NotificationIndexLazyRoute,
@@ -247,6 +271,7 @@ export const routeTree = rootRoute
         "/",
         "/auth/login",
         "/auth/register",
+        "/payment/transaction",
         "/aboutUs/",
         "/account/",
         "/notification/",
@@ -262,6 +287,9 @@ export const routeTree = rootRoute
     },
     "/auth/register": {
       "filePath": "auth/register.lazy.jsx"
+    },
+    "/payment/transaction": {
+      "filePath": "payment/transaction.lazy.jsx"
     },
     "/aboutUs/": {
       "filePath": "aboutUs/index.lazy.jsx"
